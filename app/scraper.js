@@ -6,7 +6,12 @@
 
 const rp = require('request-promise');
 const $ = require('cheerio');
-const url = 'https://www.giallozafferano.it/ricette-cat/';
+const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+//const cliProgress = require('cli-progress');
+
+const url = 'https://www.giallozafferano.it/ricette-cat/'; //https://www.giallozafferano.it/ricette-cat/page336/
 
 const get_ingredients = (url) => {
     return rp(url)
@@ -60,81 +65,79 @@ const get_ingredients = (url) => {
             }
             //console.log(ret_json);
 
-            return new Promise( (resolve, reject) => {resolve(ret_json)});
+            //return new Promise( (resolve, reject) => {resolve(ret_json)});
+            return ret_json;
 
         })
         .catch((err)=>{
             console.error(err);
         });
 
+};
+const write_doc = (doc, db_url='mongodb://localhost:27017', dbName = 'recipe-se', collection_name='recipes')=>{
+    const client = new MongoClient(db_url, useUnifiedTopology=true);
+
+    // Use connect method to connect to the Server
+    client.connect((err) => {
+        assert.equal(null, err);
+        //console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        db.collection(collection_name).insertOne(doc, (err, r) => {
+            assert.equal(null, err);
+            assert.equal(1, r.insertedCount);
+        });
+        client.close();
+    });
 }
 
-rp(url)
-    .then( async (html) => {
-        /*
-        - TODO: save html file for further analysis (backup ...)
-        - TODO: save log for recovery on errors (like url you failed to scrape st we can recover data later)
-        - TODO: build a logger and redirect it to a file
-         */
+const scrape_page = async (full_url) =>{
+    rp(full_url)
+        .then( async (html) => {
+            /*
+            - TODO: save html file for further analysis (backup ...)
+            - TODO: save log for recovery on errors (like url you failed to scrape st we can recover data later)
+            - TODO: build a logger and redirect it to a file
+             */
 
-        // Get all the <a> tag childern of div with class .gz-description
-        let result = $(".gz-description > a", html);
+            // Get all the <a> tag childern of div with class .gz-description
+            let result = $(".gz-description > a", html);
+            //Download all recipes in the page
+            for(let j=0; j<result.length; j++){
+                let data =  await get_ingredients(result[j].attribs.href).then( (jsn) =>{
+                    jsn['href'] = result[j].attribs.href;
+                    jsn['title'] = result[j].attribs.title;
+                    return jsn;
+                });
+                //console.log(await data);
+                write_doc(await data);
 
-        console.log(result.length);
-        console.log(result[0].attribs.href);
-        console.log(result[0].attribs.title);
-
-        console.log('Tryng to parse ingredients:\n');
-
-        //console.log(await get_ingredients(result[0].attribs.href));
-
-
-         let data =  await get_ingredients(result[0].attribs.href).then( (jsn) =>{
-            console.log(jsn);
-            jsn['href'] = result[0].attribs.href;
-            jsn['title'] = result[0].attribs.title;
-            console.log("DIOCANE");
-
-            return jsn;
-         });
-         console.log(data);
-
-
-
-
-
-
-
-        //console.log(data);
-
-        // for each child get the page, store the information and loop till the end of the recipes for this page
-        /*
-        const MongoClient = require('mongodb').MongoClient;
-        const assert = require('assert');
-
-        // Connection URL
-        const url = 'mongodb://localhost:27017';
-
-        // Database Name
-        const dbName = 'myproject';
-
-        // Create a new MongoClient
-        const client = new MongoClient(url);
-
-        // Use connect method to connect to the Server
-        client.connect(function(err) {
-          assert.equal(null, err);
-          console.log("Connected successfully to server");
-
-          const db = client.db(dbName);
-
-          client.close();
+            }
+        })
+        .catch( (err) => {
+            //handle error
+            console.error(err);
         });
-        * */
+}
+
+let main_prog = async (full_url) => {
+    await scrape_page(full_url);
+}
+
+let page_max = 336;
+let page = 1;
+let full_url = url+'page'+page+'/';
+
+let interval =setInterval(() => {
+    main_prog(full_url);
+    // runs after 1 seconds
+    page++;
+    full_url = url+'page'+page+'/';
+    if(page > page_max){
+        clearInterval(interval);
+    }
+    console.log(full_url);
+}, 1500)
 
 
-    })
-    .catch( (err) => {
-        //handle error
-        console.error(err);
-    });
+
+
