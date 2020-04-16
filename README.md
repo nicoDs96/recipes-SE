@@ -1,7 +1,5 @@
 # recipes-SE
 a recipes search engine  
 ## IMPORTANT
-to clone the db, from the machine where you want to copy to, type
-```db.copyDatabase(<from_db>, <to_db>, <from_hostname>, <username>, <password>);```
-  
+to load the db import in compass the file db_export/gz-recipes.json
 ## Project link: https://github.com/users/nicoDs96/projects/1
