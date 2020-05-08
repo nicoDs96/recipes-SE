@@ -10,6 +10,7 @@ public class LoginResult {
     // SerName mi serve quando la mia variabile ha un nome diverso
    // @SerializedName("email")
     private  String email;
+    
 
     public String getName() {
         return name;
