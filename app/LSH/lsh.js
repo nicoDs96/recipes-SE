@@ -1,4 +1,6 @@
 var XXHash64 = require('xxhash');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
 
 const K =5;
 const N = 200;
@@ -35,16 +37,19 @@ class Shingler {
         * TRANSFORM THE DOCUMENT INTO A SET OF K SHINGLINGS.
         * IF hashed THEN RETURN HASHED SHINGLINGS
         * */
+        var hashed_shingles;
+        var i;
+        var shingles;
         document = document.toLowerCase();
-        let shingles = new Set();
+        shingles = new Set();
 
-        for(let i=0; i<document.length - this.k+1; i++){
+        for(i=0; i<document.length - this.k+1; i++){
             shingles.add( document.substr(i,this.k) );
         }
 
         if(hashed){ // hash the shingles
 
-            let hashed_shingles= new Set();
+            hashed_shingles= new Set();
             shingles.forEach((key, elem, set)=>{
                 hashed_shingles.add(
                     parseInt(XXHash64.hash64(Buffer.from(elem), this.seed, "hex"),16)
@@ -258,52 +263,126 @@ class BucketCollection{
 
 }
 
-/*
- * 1. Get all the documents from the db
- * 2. Create and store a mapping from DB(doc_id) and SigMat(doc_id)
- * 3. mantain the bands of the signature matrix to allow queries
+/**
+ * Mirror of the Index in the db
  */
-
 class Index{
 
-    constructor(k, n, seed, document_list) {
-        this.shingler = new Shingler(k,seed);
-        this.minhasher = new MinHasher(n, seed);
+    constructor(k, n, seed) {
+        this.db_url = 'mongodb://localhost:27017';
+        this.dbName = 'recipe-se';
+        this.recipes_collection='recipes';
+        this.buckets_collection='Buckets';
+        this.shingler = new Shingler(k, seed);
+        this.minHasher = new MinHasher(n,seed);
+        this.SEED=seed;
+
+    }
+
+    async searchSimilar(ingredients){
+        //  Transform the query string
+        let queryShinglingSet = this.shingler.get_shingling(ingredients, true);
+        let querySignatureBands = this.minHasher.get_signature_matrix([queryShinglingSet]).get_bands()[0];
+
+        let candidates = [];
+        // Search candidates in the db.
+        for(let j=0; j<querySignatureBands.length; j++) {
+            let band_value = parseInt(XXHash64.hash64(Buffer.from(querySignatureBands[j]), this.SEED, "hex"), 16);
+            console.log(band_value);
+           //find bucket with {band:j,value:band_value}
+            try {
+                const client = new MongoClient(this.db_url);
+                await client.connect();
+                const db = client.db(this.dbName);
+                const col = db.collection(this.buckets_collection);
+
+                let r = await col.find({band:j,value:band_value}).toArray();
+                if(r.length > 0){
+                    r.forEach( (bucket)=>{
+                        let ids = bucket.recipes_ids.forEach(id =>{
+                            candidates.push(id);
+                        });
+                        console.log(ids);
+                    });
+                }else{
+                    console.log("0");
+                }
 
 
-        // 1. build the mapping dbdocid -> sig_mat index
-        // TODO
-
-        //2.1 compute shinglings
-        let shingling_list = [];
-        document_list.forEach(document =>{
-            shingling_list.push(
-                this.shingler.get_shingling(document,true)
-            );
-        });
-        //2.2 compute minhash signature and bands
-        this.bands = this.minhasher.get_signature_matrix(shingling_list).get_bands();
-
-        //2.3 compute bands buckets
-        this.band_buckets=[];
-        let DOC_NR=this.bands.length;
-        for(let i=0;i< BANDS_NR; i++){
-
-            this.band_buckets.push(
-                new BucketCollection(BANDS_NR)
-            );
-
-            for(let doc_id=0; doc_id<DOC_NR; doc_id++){
-                this.band_buckets[i].add_bucket(this.bands[doc_id][i],doc_id);
+                // Close connection
+                await client.close();
+            } catch (err) {
+                console.log(err.stack);
             }
 
-
         }
+
+
+        return candidates;
+    }
+}
+
+class RAMIndex{
+
+     constructor(k, n, seed) {
+        this.shingler = new Shingler(k,seed);
+        this.minhasher = new MinHasher(n, seed);
+        this.url = 'mongodb://localhost:27017';
+        this.dbName = 'recipe-se';
+        this.collection_name='recipes';
+        this.db2doc_ids = new Map();
+
+        let t1 = new Date().getTime();
+        this.get_all_recipes().then( recipes =>{
+            let shingling_list = [];
+            let ingredients = "";
+
+            // 1. build the mapping dbdocid -> sig_mat index
+            for(let i=0; i< recipes.length; i++){
+                this.db2doc_ids.set(i,recipes[i]._id);
+
+
+                recipes[i].ingredients.forEach( object =>{
+                    ingredients = ingredients + object.ingredient.toString().toLowerCase()+ " ,";
+                });
+                ingredients = ingredients.slice(0,ingredients.length-2);
+                //console.log(ingredients);
+                //process.exit();
+
+                //2.1 compute shinglings
+                shingling_list.push(
+                    this.shingler.get_shingling(ingredients,true)
+                );
+            }
+
+            //2.2 compute minhash signature and bands
+            this.bands = this.minhasher.get_signature_matrix(shingling_list).get_bands();
+
+            //2.3 compute bands buckets
+            this.band_buckets=[];
+            let DOC_NR=this.bands.length;
+            for(let i=0;i< BANDS_NR; i++){
+
+                this.band_buckets.push(
+                    new BucketCollection(BANDS_NR)
+                );
+
+                for(let doc_id=0; doc_id<DOC_NR; doc_id++){
+                    this.band_buckets[i].add_bucket(this.bands[doc_id][i],doc_id);
+                }
+
+            }
+            console.log("Index computed into:");
+            console.log(t1 - new Date().getTime());
+        });
+
 
     }
 
     get_similar_document(query_doc){
-        //query_doc is a string of comma separated ingredients .
+        //query_doc is a string of comma separated ingredients
+        // TODO: Translate results into db ids so that we can query the db and retrive real data.
+        // TODO: compute similarity scores (%)
 
         //Sign the query
         let shingled_query = this.shingler.get_shingling(query_doc, true);
@@ -325,17 +404,20 @@ class Index{
                 console.log(collision_bucket.documents);
                 console.log("\n\n");
                 collision_bucket.documents.forEach(el=>{candidates.push(el)});
-
             }
-
         }
-
         // return a list of doc_id that are potential candidates
         let candidates_set = this.remove_duplicates(candidates);
+        let candidates_db_ids = candidates_set.map(doc_id=>{
+            let db_id = this.db2doc_ids.get(doc_id);
+            if(db_id == undefined){
+                console.error(`doc_id ${doc_id} returned undefined in the mapping.`);
+            }
+        });
+        console.log(candidates_db_ids);
         return candidates_set;
-
-
     }
+
 
     remove_duplicates(array){
         let nodup = [];
@@ -362,6 +444,30 @@ class Index{
         }
         return nodup;
 
+    }
+
+    async get_all_recipes() {
+        const client = new MongoClient(this.url);
+        let recipes= undefined;
+        try {
+            await client.connect();
+            console.log("Connected correctly to server");
+
+            const db = client.db(this.dbName);
+
+            // Get the collection
+            const col = db.collection(this.collection_name);
+
+            // Get first two documents that match the query
+            recipes = await col.find().toArray();
+
+        } catch (err) {
+            console.log(err.stack);
+        }
+
+        // Close connection
+        await client.close();
+        return recipes;
     }
 
 

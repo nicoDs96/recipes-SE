@@ -2,12 +2,29 @@
 const { Shingler, MinHasher, SignatureMatrix, Bucket, BucketCollection, Index, XXHash64} = require("./lsh");
 
 const K =5;
-const N = 200;
+const N = 100;
 const SEED = 1000;
 const T =0.8;
-const BANDS_ROW = 3;
+const BANDS_ROW = 5;
 const BANDS_NR = Math.trunc(N/BANDS_ROW);
 
+
+console.log("-----------------------------------------------------\nINDEX TEST\n\n");
+let doc3 =  "burro, farina, uova, latte intero, lievito in polvere";
+let doc4 =  "riso, frutti di mare";
+
+
+let index = new Index(K, N, SEED);
+
+(async function(){
+    let candidates = await index.searchSimilar(doc4);
+    console.log("Similar Items:");
+    console.log(candidates);
+    console.log("\n\n");
+
+})();
+
+/*
 console.log("-------------------------------------------------------------------\nLow Level Test\n\n");
 let doc1= "Mozzarella di bufala, spaghetti, pomodoro, olio, basilico";
 let doc2 = "pollo";
@@ -73,13 +90,11 @@ for(let band_idx=0;band_idx< query_bands.length;band_idx++){
 
 }
 
-console.log("-----------------------------------------------------\nINDEX TEST\n\n");
-let doc3 =  "Mozzarella di bufala, spaghetti, pomodoro, basilico";
-let doc4 =  "Mozzarella di bufala, spaghetti, pomodoro, olio d'oliva";
-let index = new Index(K, N, SEED, [doc1,doc2,doc3,doc4]);
+
+//let candidates =  index.get_similar_document(query);
+//console.log("Similar Items:")
+//console.log(candidates);
+//console.log("\n\n");
 
 
-let candidates =  index.get_similar_document(query);
-console.log("Similar Items:")
-console.log(candidates);
-console.log("\n\n")
+ */
