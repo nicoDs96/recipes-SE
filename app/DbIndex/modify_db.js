@@ -28,7 +28,7 @@ const collection_name='recipes';
 *
 
 db.recipes.find(
-    {$text: {$search:["farina00", "burro" "uova", "zucchero"]} },
+    {$text: {$search:"farina00 burro uova zucchero"} },
     { score: { $meta: "textScore" } }
 ).sort({ score: { $meta: "textScore" } })
 .pretty()
