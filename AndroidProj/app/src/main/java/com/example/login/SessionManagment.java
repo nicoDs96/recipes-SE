@@ -40,7 +40,7 @@ public class SessionManagment {
 
              public  void    removeSession(){
 
-                editor.putString(SESSION_KEY,"none").commit();
+                editor.putString(SESSION_KEY,"").commit();
 
              }
 }

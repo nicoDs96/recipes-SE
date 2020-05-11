@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-       // checkSession();
+        checkSession();
 
     }
 
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         // if logged move to UserActivity
         SessionManagment sessionManagment = new SessionManagment(MainActivity.this);
         String email= sessionManagment.getSession();
-        if (email != "none"){
+        if (email != ""){
             //
             moveToUserActivity();
         } else{
