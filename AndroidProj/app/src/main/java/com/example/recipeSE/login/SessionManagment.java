@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.recipeSE.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;

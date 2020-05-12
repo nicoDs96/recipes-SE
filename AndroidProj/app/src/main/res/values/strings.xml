@@ -2,5 +2,8 @@
     <string name="app_name">Login</string>
     <string name="facebook_app_id">258180565559602</string>
     <string name="fb_login_protocol_scheme">fb258180565559602</string>
+    <string name="search_label">Search Bar</string>
+    <string name="search_hint">Insert ingredients: rice, tuna, ...</string>
+    <string name="app_label">Recipe-SE</string>
 
 </resources>

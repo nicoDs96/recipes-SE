@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.recipeSE.login;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 
 public interface RetrofitInterface {
 
-    @POST("/login")
+    @POST("/recipeSE")
     Call<LoginResult> executeLogin(@Body HashMap<String, String> map);
 
 

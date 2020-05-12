@@ -1,6 +1,4 @@
-package com.example.login;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.recipeSE.login;
 
 public class LoginResult {
 

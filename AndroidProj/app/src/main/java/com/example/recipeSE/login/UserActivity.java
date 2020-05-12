@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.recipeSE.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.recipeSE.R;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 

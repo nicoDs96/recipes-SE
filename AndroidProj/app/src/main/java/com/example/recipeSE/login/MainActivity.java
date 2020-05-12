@@ -1,4 +1,4 @@
-package com.example.login;
+package com.example.recipeSE.login;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.recipeSE.R;
+import com.example.recipeSE.search.SearchBarActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loginF= findViewById(R.id.login_button);
-         callbackManager = CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
         loginF.registerCallback(callbackManager, new FacebookCallback<com.facebook.login.LoginResult>() {
             @Override
             public void onSuccess(com.facebook.login.LoginResult loginResult) {
@@ -110,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 handleSignupDialog();
+            }
+        });
+
+        findViewById(R.id.goto_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SearchBarActivity.class);
+                startActivity(intent);
             }
         });
 
