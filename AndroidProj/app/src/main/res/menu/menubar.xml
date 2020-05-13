@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <group>
+        <item
+            android:id="@+id/menu_search"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="" />
+        <item
+            android:id="@+id/menu_savedrecipes"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="" />
+        <item
+            android:id="@+id/menu_shoppinglist"
+            android:icon="@android:drawable/checkbox_on_background"
+            android:title="" />
+        <item
+            android:id="@+id/menu_settings"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="" />
+    </group>
+
+
+</menu>
