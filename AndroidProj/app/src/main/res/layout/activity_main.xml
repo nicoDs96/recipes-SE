@@ -47,6 +47,18 @@
         android:text="Facebook"
         android:layout_marginVertical="5dp"/>
 
+    <Button
+        android:id="@+id/test_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test user" />
+
+    <Button
+        android:id="@+id/testshop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="testshop" />
 
 
 </RelativeLayout>
