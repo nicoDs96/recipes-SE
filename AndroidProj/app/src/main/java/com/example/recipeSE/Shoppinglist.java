@@ -1,62 +1,68 @@
 package com.example.recipeSE;
 
-import android.content.Context;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Shoppinglist extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<String> planetList=new ArrayList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
 
+        displayIngr("sessionkey"); //TODO: sostituire costante con sessionkey var
+
         findViewById(R.id.addIngr).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText bar = (EditText) findViewById(R.id.addBar);
-                if (!bar.getText().equals("")) {
-
-                    ArrayList<String> ingr = new ArrayList<String>();
-                    ingr = getArrayList("sessionkey"); //TODO: sostituire costante con sessionkey var
-                    String barString = bar.getText();
-                    ingr.add(barString);
-                    saveArrayList(ingr,"sessionkey");
-                    TextView testPref = findViewById(R.id.testpref);
-                    testPref.setText(getArrayList("sessionkey").toString());
+                EditText bar = findViewById(R.id.addBar);
+                if (!bar.getText().toString().equals("")) {
+                    String ingr = bar.getText().toString();
+                    addToSet("sessionkey",ingr);
+                    displayIngr("sessionkey");
                 }
             }
-
         });
 
     }
-    public void saveArrayList(ArrayList<String> list, String key){
+    public void addToSet(String key,String ingr){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
+        Set<String> updatedSet = getTheSet(key);
+        updatedSet.add(ingr);
+        editor.putStringSet(key, updatedSet);
         editor.apply();
     }
 
-    public ArrayList<String> getArrayList(String key){
+    public HashSet<String> getTheSet(String key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Gson gson = new Gson();
-        String json = prefs.getString(key, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
-        return gson.fromJson(json, type);
+        return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
+    }
+
+    public void displayIngr(String key){
+        planetList = new ArrayList();
+        for (String str : getTheSet(key))
+            planetList.add(str);
+        recyclerView = findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new PlanetAdapter(planetList,getApplicationContext());
+        recyclerView.setAdapter(adapter);
     }
 }
