@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
-import com.example.recipeSE.search.SearchBarActivity;
+import com.example.recipeSE.search.SearchActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -116,10 +116,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: remove it when no more needed (clear app design is ready)
         findViewById(R.id.goto_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchBarActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
             }
         });
