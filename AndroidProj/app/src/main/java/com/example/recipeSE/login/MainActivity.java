@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.SearchActivity;
+import com.example.recipeSE.Shoppinglist;
+import com.example.recipeSE.search.SearchBarActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -125,6 +127,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        findViewById(R.id.test_user).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveToUserActivity();
+            }
+        });
+
+        findViewById(R.id.testshop).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Shoppinglist.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
