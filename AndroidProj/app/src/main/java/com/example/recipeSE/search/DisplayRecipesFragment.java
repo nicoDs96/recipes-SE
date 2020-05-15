@@ -30,9 +30,9 @@ public class DisplayRecipesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
-        model.getRecipes().observe(getViewLifecycleOwner(), { (item) ->
+        /*model.getRecipes().observe(getViewLifecycleOwner(), { (item) ->
                 // Update the UI.
-        });
+        });*/
 
 
     }
