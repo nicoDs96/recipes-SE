@@ -1,21 +1,34 @@
 package com.example.recipeSE;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+
+
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetViewHolder> {
 
     ArrayList<String> planetList;
+    private final Context context;
 
     public PlanetAdapter(ArrayList<String> planetList, Context context) {
         this.planetList = planetList;
+        this.context = context;
     }
 
     @Override
@@ -26,9 +39,18 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     }
 
     @Override
-    public void onBindViewHolder(PlanetAdapter.PlanetViewHolder holder, int position) {
+    public void onBindViewHolder(final PlanetAdapter.PlanetViewHolder holder, int position) {
+        //TODO: checkbox backend (not mandatory)
         holder.text.setText(planetList.get(position).toString());
-
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeFromSet("sessionkey",holder.text.getText().toString()); //TODO: sostituire costante
+                Intent intent  = new Intent(context, Shoppinglist.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -37,13 +59,32 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     }
 
     public static class PlanetViewHolder extends RecyclerView.ViewHolder{
+        protected CheckBox box;
         protected TextView text;
+        protected ImageView img;
 
 
         public PlanetViewHolder(View itemView) {
             super(itemView);
+            box= itemView.findViewById(R.id.checkBox2);
             text= itemView.findViewById(R.id.text_id);
+            img= itemView.findViewById(R.id.imageButton);
 
         }
     }
+
+    public void removeFromSet(String key,String ingr){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Set<String> updatedSet = getTheSet(key);
+        updatedSet.remove(ingr);
+        editor.putStringSet(key, updatedSet);
+        editor.apply();
+    }
+
+    public HashSet<String> getTheSet(String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
+    }
+
 }
