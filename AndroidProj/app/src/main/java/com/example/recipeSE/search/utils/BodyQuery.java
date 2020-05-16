@@ -1,4 +1,10 @@
 package com.example.recipeSE.search.utils;
 
-public interface BodyQuery {
+public class BodyQuery {
+    private String [] ingredients;
+
+    public BodyQuery(String query) {
+        this.ingredients = query.split(" ");
+    }
+
 }

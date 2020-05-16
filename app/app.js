@@ -33,6 +33,26 @@ app.get('/recipes', async (req, res) => {
 
 });
 
+app.post('/recipes', async (req, res) => {
+
+    try {
+        console.log(req.body);
+        res.type('application/json');
+
+        res.status(200);
+        res.json(
+            await query(req.body.ingredients.join(" "))
+        );
+        res.send();
+    }
+    catch (e) {
+        console.error("Error : " + e);
+        console.log("Try to open mongo shell and run db.recipes.createIndex({ingredients_idx:\"text\"})\n");
+        res.status(500).send("500 - Internal Error");
+    }
+
+});
+
 
 //THIS MUST BE THE LAST ROUTE
 app.use(function(req, res, next) {

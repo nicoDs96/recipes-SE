@@ -1,5 +1,7 @@
 package com.example.recipeSE;
 
+import com.example.recipeSE.search.utils.SharedViewModel;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +16,13 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+    @Test
+    public void testVM(){
+        SharedViewModel svm = new SharedViewModel();
+
+        svm.setRecipes("pasta tonno  pomodoro");
+
+        assertEquals("4", svm.getRecipes().getValue());
+    }
+
 }
