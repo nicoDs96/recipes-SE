@@ -1,28 +1,23 @@
 package com.example.recipeSE.search.utils;
 
-import android.app.Application;
+import com.google.gson.Gson;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
+import java.io.IOException;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
-public class SharedViewModel extends AndroidViewModel {
+public class SharedViewModel extends ViewModel {
     private MutableLiveData<List<Recipes>> data;
     private String currentQuery;
 
-    public SharedViewModel(@NonNull Application application) {
-        super(application);
-    }
 
     public void setRecipes(String query) {
         if (data == null) { // if this is the firs query i submit
@@ -44,31 +39,38 @@ public class SharedViewModel extends AndroidViewModel {
         return this.data;
     }
 
-    private void loadRecipes(String query) {
+    private void loadRecipes(final String query) {
         // Do an asynchronous operation to fetch data.
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this.getApplication());
-        String url ="http://www.google.com";
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        //textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //textView.setText("That didn't work!");
-            }
-        });
+        Gson gson = new Gson();
 
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
+
+        String req = gson.toJson(new BodyQuery(query));
+
+        System.out.println("req: "+ req);
+
+        String address = "http://127.0.0.1:3000/recipes";
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), req);
+        Request request = new Request.Builder()
+                .url(address)
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
 
 }
+
+
