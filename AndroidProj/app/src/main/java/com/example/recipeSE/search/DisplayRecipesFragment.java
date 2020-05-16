@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.SharedViewModel;
@@ -30,9 +28,13 @@ public class DisplayRecipesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
-        /*model.getRecipes().observe(getViewLifecycleOwner(), { (item) ->
-                // Update the UI.
-        });*/
+
+        /*model.getRecipes("").observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                Log.d( "Debug Recipe", recipes.get(0));
+            } );
+        }*/
 
 
     }

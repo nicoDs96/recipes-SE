@@ -4,7 +4,7 @@ public class BodyQuery {
     private String [] ingredients;
 
     public BodyQuery(String query) {
-        this.ingredients = query.split(" ");
+        this.ingredients = query.split(",");
     }
 
 }

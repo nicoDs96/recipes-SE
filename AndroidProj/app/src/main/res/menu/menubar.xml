@@ -11,7 +11,7 @@
         <item
             android:id="@+id/menu_savedrecipes"
             android:icon="@android:drawable/btn_star_big_on"
-            android:title="Saved recipes" />
+            android:title="Saved recipe" />
         <item
             android:id="@+id/menu_shoppinglist"
             android:icon="@android:drawable/checkbox_on_background"

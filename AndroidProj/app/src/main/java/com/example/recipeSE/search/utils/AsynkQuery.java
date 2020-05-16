@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -17,33 +15,37 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AsynkQuery implements Callable<List<Recipe>>  {
+class AsynkQuery implements Callable<List<Recipe>>  {
 
     private String query;
     public AsynkQuery(String query) {
         this.query = query;
     }
 
-
     @Override
     public List<Recipe> call() throws Exception {
+        /*
+        * SEND THE QUERY TO THE API AND WAIT THE RESPONSE
+        * */
         Gson gson = new Gson();
 
         // Make the query to Json (BodyQuery is only a Wrapper to allow gson.toJson work properly)
         String req = gson.toJson(new BodyQuery(query));
         System.out.println("req: "+ req);
 
-        String address = "http://127.0.0.1:3000/recipes";
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        String address = "http://192.168.1.63:3000/recipes";
+        //build the http client
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        //create a body to append at request
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), req);
+        //create the HTTP request, set the header,attach the body
         Request request = new Request.Builder()
                 .url(address)
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
 
+        //wait the response and convert it from JsonArray to List<Recipe>
         List<Recipe> list = null;
         try {
             Response response = client.newCall(request).execute();
@@ -61,8 +63,7 @@ public class AsynkQuery implements Callable<List<Recipe>>  {
             //parse data
             list = customGson.fromJson(resString, listRecipesType);
 
-            System.out.println(list.get(10).toString());
-            //update ViewModel
+            System.out.println(list.get(0).toString());//debug TODO: remove
 
         } catch (IOException e) {
             e.printStackTrace();

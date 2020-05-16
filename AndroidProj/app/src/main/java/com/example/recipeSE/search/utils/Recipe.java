@@ -7,14 +7,14 @@ import java.util.Objects;
 
 import androidx.annotation.RequiresApi;
 
-public class Recipes {
+public class Recipe {
     private String _id;
-    private String calories;
+    private Integer calories;
     private Map<String,String> ingredient_quantity;
     private String href;
     private String title;
 
-    public Recipes(String id, String calories, Map<String, String> ingredient_quantity, String href, String title) {
+    public Recipe(String id, Integer calories, Map<String, String> ingredient_quantity, String href, String title) {
         this._id = id;
         this.calories = calories;
         this.ingredient_quantity = ingredient_quantity;
@@ -30,11 +30,11 @@ public class Recipes {
         this._id = _id;
     }
 
-    public String getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(String calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
@@ -66,8 +66,8 @@ public class Recipes {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Recipes recipes = (Recipes) o;
-        return _id.equals(recipes._id);
+        Recipe recipe = (Recipe) o;
+        return _id.equals(recipe._id);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

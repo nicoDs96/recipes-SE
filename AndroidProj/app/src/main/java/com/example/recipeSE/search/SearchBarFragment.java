@@ -2,7 +2,6 @@ package com.example.recipeSE.search;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SharedViewModel;
 
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 public class SearchBarFragment extends Fragment {
@@ -46,8 +48,21 @@ public class SearchBarFragment extends Fragment {
                 /* TODO: load the result fragment */
                 String query = mTextInput.getText().toString();
                 /*TODO: parse and sanitize query*/
-                model.setRecipes(query);
-                /*TODO: loading + switch frame*/
+
+                /*TODO: Start loading animation*/
+
+                model.getRecipes(query).observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Recipe> recipes) {
+                                Log.d( "Debug Recipe", recipes.get(0).toString());
+                                /*switch frame*/
+                            }
+                        });
+                /*1. start the loading animation inside this fragment.
+                * 2. implement observer over SharedViewModel (HERE) st. when data arrives I can switch to
+                *    DisplayRecipesFragment
+                * 3. Implement a recycler view inside the DisplayrecipesFragment displaying the result
+                *   */
             }
         });
 
