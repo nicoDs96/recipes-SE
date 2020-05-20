@@ -50,17 +50,22 @@ public class SearchBarFragment extends Fragment {
                 /*TODO: parse and sanitize query*/
 
                 /*TODO: Start loading animation*/
-
-                model.getRecipes(query).observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+                //select activity as method to prevent crash [instead of standard getViewLifecycleOwner()]
+                model.getRecipes(query).observe(getActivity(), new Observer<List<Recipe>>() {
                             @Override
                             public void onChanged(@Nullable List<Recipe> recipes) {
-                                Log.d( "Debug Recipe", recipes.get(0).toString());
+                                //Log.d( "Debug Recipe", recipes.get(0).toString());
                                 /*switch frame*/
+                                DisplayRecipesFragment nextFrag= new DisplayRecipesFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                                        .addToBackStack(null)
+                                        .commit();
                             }
                         });
                 /*1. start the loading animation inside this fragment.
                 * 2. implement observer over SharedViewModel (HERE) st. when data arrives I can switch to
-                *    DisplayRecipesFragment
+                *    DisplayRecipesFragment OK
                 * 3. Implement a recycler view inside the DisplayrecipesFragment displaying the result
                 *   */
             }

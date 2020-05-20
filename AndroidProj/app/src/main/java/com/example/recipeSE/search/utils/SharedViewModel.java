@@ -38,9 +38,14 @@ public class SharedViewModel extends ViewModel {
 
     }
 
+    //overload the method
+    public LiveData<List<Recipe>> getRecipes() {
+        return this.data;
+    }
+
 
     private void loadRecipes(final String query) {
-        // fetch resources from API Asynchronously:
+        // fetch resources from API Asynchronously by running HTTP GET into a separate thread:
         ExecutorService executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
 
         Future<List<Recipe>> result = executor.submit(new AsynkQuery(query));
