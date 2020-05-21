@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.recipeSE.R;
 import com.google.android.material.card.MaterialCardView;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
