@@ -1,4 +1,4 @@
-package com.example.recipeSE;
+package com.example.recipeSE.shoppinglist;
 
 
 import android.content.SharedPreferences;
@@ -9,6 +9,10 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipeSE.R;
+import com.example.recipeSE.shoppinglist.PlanetAdapter;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

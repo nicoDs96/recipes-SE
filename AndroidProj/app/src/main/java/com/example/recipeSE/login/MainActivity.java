@@ -14,8 +14,7 @@ import android.widget.Toast;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.SearchActivity;
-import com.example.recipeSE.Shoppinglist;
-import com.example.recipeSE.search.SearchActivity;
+import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;

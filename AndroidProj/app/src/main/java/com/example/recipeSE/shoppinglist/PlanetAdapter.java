@@ -1,4 +1,4 @@
-package com.example.recipeSE;
+package com.example.recipeSE.shoppinglist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.recipeSE.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
