@@ -64,13 +64,17 @@
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_marginTop="8dp">
-        <com.google.android.material.button.MaterialButton
-            style="?attr/borderlessButtonStyle"
-            android:id="@+id/add_2_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fav"
-            android:gravity="center"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_2_fav"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Save"
+                android:textColor="?android:attr/textColorSecondary"
+                app:icon="@drawable/ic_star_black_24dp"
+                app:iconTint="?android:attr/textColorSecondary"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/go2site"
@@ -78,7 +82,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="GoTo" />
+            android:text="Show"
+            android:textColor="?android:attr/textColorSecondary"
+            app:icon="@drawable/ic_link_black_24dp"
+            app:iconTint="?android:attr/textColorSecondary"/>
         </LinearLayout>
     </LinearLayout>
 

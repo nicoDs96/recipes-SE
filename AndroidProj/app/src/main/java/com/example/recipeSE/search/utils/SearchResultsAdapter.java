@@ -57,7 +57,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         // create a new view
         // TODO: replace textview vith cards with cards
         MaterialCardView v = (MaterialCardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_search_text, parent, false);
+                .inflate(R.layout.view_search_results_card, parent, false);
 
 
 
