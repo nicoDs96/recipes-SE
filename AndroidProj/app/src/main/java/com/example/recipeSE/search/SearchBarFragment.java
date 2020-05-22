@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SharedViewModel;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class SearchBarFragment extends Fragment {
     private Button mSearchButton;
-    private EditText mTextInput;
+    private TextInputEditText mTextInput;
     private SharedViewModel model;
     private ProgressBar pBar;
 
@@ -39,7 +40,7 @@ public class SearchBarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.mSearchButton = (Button) getView().findViewById(R.id.search);
-        this.mTextInput = (EditText) getView().findViewById(R.id.editText);
+        this.mTextInput = (TextInputEditText) getView().findViewById(R.id.materialInputText);
         this.pBar = (ProgressBar) getView().findViewById(R.id.searchBarProgress);
         this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
 
