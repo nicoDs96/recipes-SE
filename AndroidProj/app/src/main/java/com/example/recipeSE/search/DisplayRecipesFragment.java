@@ -5,16 +5,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 import com.example.recipeSE.search.utils.SharedViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,12 +63,28 @@ public class DisplayRecipesFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 Log.d("DisplayRecipesFrag Obs","Called!");
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
+
+                //get the current query and display it inside the searchbar of this fragment
+                TextInputEditText fragmentSearchBar=(TextInputEditText) getView().findViewById(R.id.searchbarRecView);
+                fragmentSearchBar.setText(model.getCurrentQuery());
+
+                //configure recycler view adapter with the observed object from the viewmodel
                 mAdapter = new SearchResultsAdapter(recipes);
                 recyclerView.setAdapter(mAdapter);
             }
         });
 
+        getView().findViewById(R.id.searchButtonRecView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedViewModel m =  new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
+                TextInputEditText fragmentSearchBar = (TextInputEditText) (TextInputEditText) getView().findViewById(R.id.searchbarRecView);
+                m.getRecipes(fragmentSearchBar.getText().toString());
+            }
+        });
 
 
     }
+
 }

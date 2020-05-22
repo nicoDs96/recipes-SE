@@ -43,6 +43,8 @@ public class SharedViewModel extends ViewModel {
         return this.data;
     }
 
+    public String getCurrentQuery(){return this.currentQuery;}
+
 
     private void loadRecipes(final String query) {
         // fetch resources from API Asynchronously by running HTTP GET into a separate thread:
