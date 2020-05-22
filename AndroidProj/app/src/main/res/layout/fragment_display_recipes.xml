@@ -44,6 +44,26 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/displayProgressBar"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-->android:visibility="gone"<-->
+
+    </ProgressBar>
+
+    <TextView
+        android:id="@+id/noResultErorrTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/no_result_error"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:visibility="gone"></TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_result_recycler_view"
         android:layout_width="match_parent"

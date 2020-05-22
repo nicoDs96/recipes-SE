@@ -29,8 +29,9 @@ public class SharedViewModel extends ViewModel {
         else{
             //if I already have data and the new query is different from the old one re-fetch data
             if( ! this.currentQuery.equals(query) ){
-                loadRecipes(query);
                 this.currentQuery = query; //update the query that generates data
+                //async data loading procedure
+                loadRecipes(query);
             }
 
             return this.data;
@@ -38,7 +39,7 @@ public class SharedViewModel extends ViewModel {
 
     }
 
-    //overload the method
+    //overload the method (non-remote getter)
     public LiveData<List<Recipe>> getRecipes() {
         return this.data;
     }

@@ -5,20 +5,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.ViewTreeObserver;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 import com.example.recipeSE.search.utils.SharedViewModel;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -54,33 +52,68 @@ public class DisplayRecipesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
-        //mAdapter = new SearchResultsAdapter(myDataset);
-        //recyclerView.setAdapter(mAdapter);
 
-        //create the adapter and attachit to RV when the data arrives from the API
+        //create the adapter and attach it to RV when the data arrives from the API
         model.getRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 Log.d("DisplayRecipesFrag Obs","Called!");
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
-
                 //get the current query and display it inside the searchbar of this fragment
                 TextInputEditText fragmentSearchBar=(TextInputEditText) getView().findViewById(R.id.searchbarRecView);
                 fragmentSearchBar.setText(model.getCurrentQuery());
 
+                if(recipes.size()<1){
+                    //Disaply no resoult found text
+                    getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.VISIBLE);
+                    //  hide the progress bar
+                    getView().findViewById(R.id.displayProgressBar).setVisibility(View.GONE);
+                }else{
+                    getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.GONE);
+
+                }
+
+
                 //configure recycler view adapter with the observed object from the viewmodel
                 mAdapter = new SearchResultsAdapter(recipes);
                 recyclerView.setAdapter(mAdapter);
+
+                //remove the progress bar when the recycler view has finished to load all elements
+                recyclerView.getViewTreeObserver()
+                        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                //At this point the layout is complete and the
+                                //dimensions of recyclerView and any child views are known.
+                                //Remove listener after changed RecyclerView's height to prevent infinite loop
+                                recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                getView().findViewById(R.id.displayProgressBar).setVisibility(View.GONE);
+                            }
+                        });
+
+
             }
         });
 
+        //provide search functionalities even in this view
         getView().findViewById(R.id.searchButtonRecView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedViewModel m =  new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
-                TextInputEditText fragmentSearchBar = (TextInputEditText) (TextInputEditText) getView().findViewById(R.id.searchbarRecView);
-                m.getRecipes(fragmentSearchBar.getText().toString());
+
+
+                //get the query and pass it to the viewmodel
+                TextInputEditText fragmentSearchBar = (TextInputEditText)  getView().findViewById(R.id.searchbarRecView);
+                String inputQuery = fragmentSearchBar.getText().toString();
+
+                if(!inputQuery.equals(model.getCurrentQuery())){
+                   //if the query are the same the ViewModel won't change its internal data -> no
+                    // observer is notified -> The progress bar does not disappear.
+                    // Make the progress bar visible iff a new (different from the prev.) query is inserted
+
+                    //show progress bar waiting for the results
+                    getView().findViewById(R.id.displayProgressBar).setVisibility(View.VISIBLE);
+                }
+                model.getRecipes(inputQuery);
+
             }
         });
 

@@ -1,11 +1,14 @@
 package com.example.recipeSE.search.utils;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -46,11 +49,11 @@ class AsynkQuery implements Callable<List<Recipe>>  {
                 .build();
 
         //wait the response and convert it from JsonArray to List<Recipe>
-        List<Recipe> list = null;
+        List<Recipe> list = new LinkedList<>();
         try {
             Response response = client.newCall(request).execute();
             String resString = response.body().string();
-            System.out.println(resString); //log info
+            Log.d("Server Response",resString); //log info
 
             // Register a custom deserializer with gson
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -63,7 +66,6 @@ class AsynkQuery implements Callable<List<Recipe>>  {
             //parse data
             list = customGson.fromJson(resString, listRecipesType);
 
-            System.out.println(list.get(0).toString());//debug TODO: remove
 
         } catch (IOException e) {
             e.printStackTrace();

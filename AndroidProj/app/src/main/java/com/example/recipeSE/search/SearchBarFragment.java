@@ -1,12 +1,12 @@
 package com.example.recipeSE.search;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
@@ -24,6 +24,7 @@ public class SearchBarFragment extends Fragment {
     private Button mSearchButton;
     private EditText mTextInput;
     private SharedViewModel model;
+    private ProgressBar pBar;
 
 
     @Nullable
@@ -39,23 +40,32 @@ public class SearchBarFragment extends Fragment {
 
         this.mSearchButton = (Button) getView().findViewById(R.id.search);
         this.mTextInput = (EditText) getView().findViewById(R.id.editText);
-
+        this.pBar = (ProgressBar) getView().findViewById(R.id.searchBarProgress);
         this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
 
         this.mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* TODO: load the result fragment */
+                /*Start loading animation*/
+
+                getView().findViewById(R.id.searchBarProgress).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.search).setVisibility(View.GONE);
+
+
                 String query = mTextInput.getText().toString();
                 /*TODO: parse and sanitize query*/
 
-                /*TODO: Start loading animation*/
+
+
                 //select activity as method to prevent crash [instead of standard getViewLifecycleOwner()]
-                model.getRecipes(query).observe(getActivity(), new Observer<List<Recipe>>() {
+                model.getRecipes(query).observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
                             @Override
                             public void onChanged(@Nullable List<Recipe> recipes) {
-                                //Log.d( "Debug Recipe", recipes.get(0).toString());
-                                /*switch frame*/
+
+                                //Stop loading animation
+                                getView().findViewById(R.id.searchBarProgress).setVisibility(View.GONE);
+                                getView().findViewById(R.id.search).setVisibility(View.VISIBLE);
+                                /*switch frame [load the result fragment] */
                                 DisplayRecipesFragment nextFrag= new DisplayRecipesFragment();
                                 getActivity().getSupportFragmentManager().beginTransaction()
                                         .replace(R.id.search_activity, nextFrag, "findThisFragment")
@@ -63,11 +73,7 @@ public class SearchBarFragment extends Fragment {
                                         .commit();
                             }
                         });
-                /*1. start the loading animation inside this fragment.
-                * 2. implement observer over SharedViewModel (HERE) st. when data arrives I can switch to
-                *    DisplayRecipesFragment OK
-                * 3. Implement a recycler view inside the DisplayrecipesFragment displaying the result
-                *   */
+
             }
         });
 
