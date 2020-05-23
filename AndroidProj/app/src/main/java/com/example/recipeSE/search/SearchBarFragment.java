@@ -1,12 +1,13 @@
 package com.example.recipeSE.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
@@ -26,6 +27,8 @@ public class SearchBarFragment extends Fragment {
     private TextInputEditText mTextInput;
     private SharedViewModel model;
     private ProgressBar pBar;
+    private Observer<String> errorObserver;
+    private Observer<List<Recipe>> queryObserver;
 
 
     @Nullable
@@ -39,46 +42,86 @@ public class SearchBarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.mSearchButton = (Button) getView().findViewById(R.id.search);
-        this.mTextInput = (TextInputEditText) getView().findViewById(R.id.materialInputText);
-        this.pBar = (ProgressBar) getView().findViewById(R.id.searchBarProgress);
+        this.mSearchButton = (Button) view.findViewById(R.id.search);
+        this.mTextInput = (TextInputEditText) view.findViewById(R.id.materialInputText);
+        this.pBar = (ProgressBar) view.findViewById(R.id.searchBarProgress);
+        hideProgressBar();
         this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
+
+        //define UX behaviour when query arrives
+        queryObserver = new Observer<List<Recipe>>() {
+            //perform the query and when results are available switch fragment to display result fragment
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+
+                //Stop loading animation
+                hideProgressBar();
+                /*switch frame [load the result fragment] */
+                DisplayRecipesFragment nextFrag= new DisplayRecipesFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        };
+
+        //if there is an exception display an error message
+        errorObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String status) {
+                Log.d("Status Observer","Called, Status: "+status);
+                if (status.equals("FAIL")){
+                    String errorMsg="Something went wrong, check your connection and retry.";
+                    Toast.makeText(getContext(),errorMsg,Toast.LENGTH_LONG).show();
+
+                    hideProgressBar();
+
+
+                }
+            }
+        };
 
         this.mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 /*Start loading animation*/
+                showProgressBar();
 
-                getView().findViewById(R.id.searchBarProgress).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.search).setVisibility(View.GONE);
-
-
+                //get the query
                 String query = mTextInput.getText().toString();
                 /*TODO: parse and sanitize query*/
 
-
-
+                //perform the query and when results are available switch fragment to display result fragment
                 //select activity as method to prevent crash [instead of standard getViewLifecycleOwner()]
-                model.getRecipes(query).observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Recipe> recipes) {
 
-                                //Stop loading animation
-                                getView().findViewById(R.id.searchBarProgress).setVisibility(View.GONE);
-                                getView().findViewById(R.id.search).setVisibility(View.VISIBLE);
-                                /*switch frame [load the result fragment] */
-                                DisplayRecipesFragment nextFrag= new DisplayRecipesFragment();
-                                getActivity().getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.search_activity, nextFrag, "findThisFragment")
-                                        .addToBackStack(null)
-                                        .commit();
-                            }
-                        });
-
+                model.getRecipes(query).observe(getViewLifecycleOwnerLiveData().getValue(), queryObserver);
             }
         });
 
+        //observe the status and display error if something goes wrong
+        model.status.observe(getViewLifecycleOwner(),errorObserver );
 
+    }
+    private void showProgressBar(){
+        pBar.setVisibility(View.VISIBLE);
+        mSearchButton.setVisibility(View.GONE);
+    }
+    private void hideProgressBar(){
+        pBar.setVisibility(View.GONE);
+        mSearchButton.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void onPause() {
+        model.status.removeObserver(errorObserver);
+        super.onPause();
+
+    }
+
+    @Override
+    public void onResume() {
+        model.status.observe( getViewLifecycleOwner(), errorObserver);
+        super.onResume();
     }
 }

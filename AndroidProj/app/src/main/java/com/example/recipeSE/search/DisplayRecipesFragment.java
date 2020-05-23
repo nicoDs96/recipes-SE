@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.search.utils.Recipe;
@@ -15,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,12 +31,31 @@ public class DisplayRecipesFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ProgressBar pBar;
+    private Observer<String> errorObserver;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        // Customize Andorid backbutton action
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                SearchBarFragment nextFrag= new SearchBarFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.search_activity, nextFrag, "searchBarFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
+
         //create a view and attach to it a layout
         return inflater.inflate(R.layout.fragment_display_recipes, container, false);
     }
@@ -52,8 +74,9 @@ public class DisplayRecipesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        pBar = getView().findViewById(R.id.displayProgressBar);
 
-        //create the adapter and attach it to RV when the data arrives from the API
+        //create the adapter and attach it to RV when the data arrives from the ViewModel (hence from API)
         model.getRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
@@ -66,12 +89,11 @@ public class DisplayRecipesFragment extends Fragment {
                     //Disaply no resoult found text
                     getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.VISIBLE);
                     //  hide the progress bar
-                    getView().findViewById(R.id.displayProgressBar).setVisibility(View.GONE);
+                    hideProgressBar();
                 }else{
                     getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.GONE);
 
                 }
-
 
                 //configure recycler view adapter with the observed object from the viewmodel
                 mAdapter = new SearchResultsAdapter(recipes);
@@ -85,11 +107,10 @@ public class DisplayRecipesFragment extends Fragment {
                                 //At this point the layout is complete and the
                                 //dimensions of recyclerView and any child views are known.
                                 //Remove listener after changed RecyclerView's height to prevent infinite loop
+                                hideProgressBar();
                                 recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                getView().findViewById(R.id.displayProgressBar).setVisibility(View.GONE);
                             }
                         });
-
 
             }
         });
@@ -110,14 +131,52 @@ public class DisplayRecipesFragment extends Fragment {
                     // Make the progress bar visible iff a new (different from the prev.) query is inserted
 
                     //show progress bar waiting for the results
-                    getView().findViewById(R.id.displayProgressBar).setVisibility(View.VISIBLE);
+                    showProgressBar();
                 }
                 model.getRecipes(inputQuery);
-
             }
         });
 
+        //define the error observer
+        errorObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String status) {
+                Log.d("Status Observer","Called, Status: "+status);
+                if (status.equals("FAIL")){
+                    //display error message
+                    String errorMsg="Something went wrong, check your connection and retry.";
+                    Toast.makeText(getContext(),errorMsg,Toast.LENGTH_LONG).show();
 
+                    //Stop loading animation
+                    hideProgressBar();
+
+                }
+            }
+        };
+        //Observe status and display errors eventually
+        model.status.observe(getViewLifecycleOwner(),errorObserver );
+
+
+    }
+
+    private void showProgressBar(){
+        pBar.setVisibility(View.VISIBLE);
+    }
+    private void hideProgressBar(){
+        pBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPause() {
+        model.status.removeObserver(errorObserver);
+        super.onPause();
+
+    }
+
+    @Override
+    public void onResume() {
+        model.status.observe( getViewLifecycleOwner(), errorObserver);
+        super.onResume();
     }
 
 }

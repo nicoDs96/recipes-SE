@@ -1,5 +1,6 @@
 package com.example.recipeSE.search.utils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +16,15 @@ import androidx.lifecycle.ViewModel;
 public class SharedViewModel extends ViewModel {
     private MutableLiveData<List<Recipe>> data;
     private String currentQuery;
+    public MutableLiveData<String> status;
 
+    public SharedViewModel() {
+        this.status = new MutableLiveData<String>();
+        this.status.setValue("OK");
+    }
 
     public LiveData<List<Recipe>> getRecipes(String query) {
+        this.status.setValue("OK");
         if (data == null) { // if this is the firs query i submit
 
             this.currentQuery = query; // save the query string
@@ -55,10 +62,15 @@ public class SharedViewModel extends ViewModel {
 
         try {
             this.data.setValue( result.get() );
-        } catch (ExecutionException e) {
+        }  catch (ExecutionException e) {
             e.printStackTrace();
+            this.status.setValue("FAIL");
         } catch (InterruptedException e) {
             e.printStackTrace();
+            this.status.setValue("FAIL");
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.status.setValue("FAIL");
         }
 
     }

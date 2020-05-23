@@ -34,11 +34,12 @@
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="?android:attr/textColorSecondary" />
         <LinearLayout
+            android:id="@+id/ing_quantity_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="8dp">
-            <TextView
+            <!--><TextView
                 android:id="@+id/ingredients"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -56,6 +57,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/supporting_text"
                 android:textColor="?android:attr/textColorSecondary" />
+                <-->
         </LinearLayout>
 
         <LinearLayout

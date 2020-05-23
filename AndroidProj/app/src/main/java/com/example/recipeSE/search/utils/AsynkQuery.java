@@ -1,7 +1,6 @@
 package com.example.recipeSE.search.utils;
 
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -36,7 +35,7 @@ class AsynkQuery implements Callable<List<Recipe>>  {
         String req = gson.toJson(new BodyQuery(query));
         System.out.println("req: "+ req);
 
-        String address = "http://localhost:3000/recipes";
+        String address = "http://192.168.1.63:3000/recipes";
         //build the http client
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         //create a body to append at request
@@ -68,7 +67,7 @@ class AsynkQuery implements Callable<List<Recipe>>  {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw  e;
         }
         return list;
     }
