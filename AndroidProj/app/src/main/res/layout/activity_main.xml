@@ -54,19 +54,24 @@
         android:text="test user" />
 
     <Button
+        android:id="@+id/mapbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="530dp"
+        android:layout_marginBottom="25dp"
+        android:text="maps" />
+
+    <Button
         android:id="@+id/testshop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="testshop" />
-
-    <Button
-        android:id="@+id/mapbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="530dp"
-        android:text="maps" />
 
 
 </RelativeLayout>
