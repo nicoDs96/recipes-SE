@@ -12,5 +12,6 @@
     <string name="close">Close</string>
     <string name="loading_message">Loading</string>
     <string name="no_result_error">No result found. Try another query!</string>
+    <string name="title_activity_show_markets">Map</string>
 
 </resources>

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.search.SearchActivity;
 import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.CallbackManager;
@@ -138,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Shoppinglist.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.mapbutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
                 startActivity(intent);
             }
         });
