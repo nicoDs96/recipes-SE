@@ -1,9 +1,11 @@
 package com.example.recipeSE.shoppinglist;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +32,8 @@ public class Shoppinglist extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
 
-        displayIngr("sessionkey"); //TODO: sostituire costante con sessionkey var
+        final String key="ingredients";
+        displayIngr(key); //TODO: sostituire costante con sessionkey var
 
         findViewById(R.id.addIngr).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,31 +41,34 @@ public class Shoppinglist extends AppCompatActivity {
                 EditText bar = findViewById(R.id.addBar);
                 if (!bar.getText().toString().equals("")) {
                     String ingr = bar.getText().toString();
-                    addToSet("sessionkey",ingr);
-                    displayIngr("sessionkey");
+                    addToSet(key,ingr);
+                    displayIngr(key);
                 }
             }
         });
 
     }
     public void addToSet(String key,String ingr){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE ); //PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> updatedSet = getTheSet(key);
         updatedSet.add(ingr);
+        editor.clear(); //needed otherwise sometimes changes get lost
         editor.putStringSet(key, updatedSet);
-        editor.apply();
+        editor.commit();
     }
 
     public HashSet<String> getTheSet(String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE ); //PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
     }
 
     public void displayIngr(String key){
         planetList = new ArrayList();
-        for (String str : getTheSet(key))
+        HashSet<String> list = getTheSet(key);
+        for (String str : list) {
             planetList.add(str);
+        }
         recyclerView = findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
