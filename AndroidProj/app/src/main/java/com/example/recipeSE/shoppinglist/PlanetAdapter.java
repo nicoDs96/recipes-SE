@@ -41,11 +41,11 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     @Override
     public void onBindViewHolder(final PlanetAdapter.PlanetViewHolder holder, int position) {
         //TODO: checkbox backend (not mandatory)
-        holder.text.setText(planetList.get(position).toString());
+        holder.text.setText(planetList.get(position));
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeFromSet("sessionkey",holder.text.getText().toString()); //TODO: sostituire costante
+                removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
                 Intent intent  = new Intent(context, Shoppinglist.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
@@ -74,16 +74,17 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     }
 
     public void removeFromSet(String key,String ingr){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE );
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> updatedSet = getTheSet(key);
         updatedSet.remove(ingr);
+        editor.clear();
         editor.putStringSet(key, updatedSet);
-        editor.apply();
+        editor.commit();
     }
 
     public HashSet<String> getTheSet(String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE );
         return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
     }
 

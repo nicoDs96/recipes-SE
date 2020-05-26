@@ -32,8 +32,8 @@ public class Shoppinglist extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
 
-        final String key="ingredients";
-        displayIngr(key); //TODO: sostituire costante con sessionkey var
+        final String key="ingredients"; //TODO: sostituire costante con variabile utente
+        displayIngr(key);
 
         findViewById(R.id.addIngr).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,17 +49,17 @@ public class Shoppinglist extends AppCompatActivity {
 
     }
     public void addToSet(String key,String ingr){
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE ); //PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE );
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> updatedSet = getTheSet(key);
         updatedSet.add(ingr);
-        editor.clear(); //needed otherwise sometimes changes get lost
+        editor.clear();
         editor.putStringSet(key, updatedSet);
         editor.commit();
     }
 
     public HashSet<String> getTheSet(String key){
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE ); //PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE );
         return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
     }
 
