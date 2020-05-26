@@ -9,6 +9,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.List;
 
 public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback {
 
@@ -73,9 +77,10 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
+
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
@@ -90,9 +95,31 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
+                            Double lat = location.getLatitude();
+                            Double lon = location.getLongitude();
+                            LatLng me = new LatLng(lat, lon);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(me));
                             mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+
+
+
+                            Geocoder geocoder = new Geocoder(getBaseContext());
+                            List<Address> addresses = null;
+                            try {
+                                Log.i("Debug: ","entro nel try statement");
+                                addresses = geocoder.getFromLocationName("supermercato", 10, lat-0.005, lon-0.005, lat+0.005, lon+0.005);
+                                Log.i("Debug: ","ho fatto addresses");
+                                Log.i("Debug: ",addresses.toString());
+                                if (addresses != null && !addresses.equals("")){
+                                    Log.i("Debug: ","entro nell'if statement");
+                                    search(addresses,mMap);
+                                }
+                            } catch (Exception e) {
+                                //todo: error message
+                            }
+
+
+
                         }
                     }
                 });
@@ -114,4 +141,33 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             }
         }
     }
+
+
+
+    protected void search(List<Address> addresses, GoogleMap mMap) {
+        Log.i("Debug: ","entro nella search func");
+        Address address = addresses.get(0);
+        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+        String addressText = String.format(
+                "%s, %s",
+                address.getMaxAddressLineIndex() > 0 ? address
+                        .getAddressLine(0) : "", address.getCountryName());
+
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        markerOptions.position(latLng);
+        markerOptions.title(addressText);
+
+        //map1.clear();
+        mMap.addMarker(markerOptions);
+        //map1.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //map1.animateCamera(CameraUpdateFactory.zoomTo(15));
+        //locationTv.setText("Latitude:" + address.getLatitude() + ", Longitude:" + address.getLongitude());
+
+        Log.i("Debug: ","esco dalla search");
+    }
+
+
+
 }
