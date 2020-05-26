@@ -1,5 +1,6 @@
 package com.example.recipeSE.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.login.MainActivity;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -35,6 +38,19 @@ public class SearchBarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Customize Andorid backbutton action
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+
         return inflater.inflate(R.layout.fragment_search_bar, container, false);
     }
 
@@ -56,12 +72,13 @@ public class SearchBarFragment extends Fragment {
 
                 //Stop loading animation
                 hideProgressBar();
-                /*switch frame [load the result fragment] */
+                /*switch frame [load the result fragment]*/
                 DisplayRecipesFragment nextFrag= new DisplayRecipesFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.search_activity, nextFrag, "findThisFragment")
                         .addToBackStack(null)
                         .commit();
+
             }
         };
 

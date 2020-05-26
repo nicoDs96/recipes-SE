@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import java.util.List;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -53,7 +55,7 @@ public class DisplayRecipesFragment extends Fragment {
                         .commit();
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
 
         //create a view and attach to it a layout
@@ -81,6 +83,7 @@ public class DisplayRecipesFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 Log.d("DisplayRecipesFrag Obs","Called!");
+
                 //get the current query and display it inside the searchbar of this fragment
                 TextInputEditText fragmentSearchBar=(TextInputEditText) getView().findViewById(R.id.searchbarRecView);
                 fragmentSearchBar.setText(model.getCurrentQuery());
@@ -124,6 +127,15 @@ public class DisplayRecipesFragment extends Fragment {
                 //get the query and pass it to the viewmodel
                 TextInputEditText fragmentSearchBar = (TextInputEditText)  getView().findViewById(R.id.searchbarRecView);
                 String inputQuery = fragmentSearchBar.getText().toString();
+
+        getView().findViewById(R.id.searchButtonRecView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedViewModel m =  new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
+                TextInputEditText fragmentSearchBar = (TextInputEditText) (TextInputEditText) getView().findViewById(R.id.searchbarRecView);
+                m.getRecipes(fragmentSearchBar.getText().toString());
+            }
+        });
 
                 if(!inputQuery.equals(model.getCurrentQuery())){
                    //if the query are the same the ViewModel won't change its internal data -> no

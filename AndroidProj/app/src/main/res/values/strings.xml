@@ -14,5 +14,11 @@
     <string name="no_result_error">No result found. Try another query!</string>
     <string name="title_activity_show_markets">Map</string>
     <string name="preference_file_key">ingredient_list</string>
+    <string name="Tuna">Tuna</string>
+    <string name="favorite">Saved Recipes</string>
+    <string name="content_description_search">Search</string>
+    <string name="search">Search</string>
+    <string name="menu">menu</string>
+
 
 </resources>

@@ -5,15 +5,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.shoppinglist.PlanetAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,11 +30,23 @@ public class Shoppinglist extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<String> planetList=new ArrayList();
+    private MaterialToolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
+        // setup toolbar
+        mToolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
+        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Search</font>"));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawer = findViewById(R.id.drawernavbar);
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
 
         final String key="ingredients"; //TODO: sostituire costante con variabile utente
         displayIngr(key);

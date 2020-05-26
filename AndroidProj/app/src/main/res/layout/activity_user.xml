@@ -9,17 +9,44 @@
     android:layout_width="match_parent"
     tools:openDrawer="start">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".search.SearchActivity"
+        android:id="@+id/search_activity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/Tuna"
+                app:menu="@menu/top_app_bar"
+                app:navigationIcon="@drawable/ic_menu_24dp"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".login.UserActivity">
 
-        <ImageButton
+       <!--> <ImageButton
             android:id="@+id/showmenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/ic_menu_sort_by_size"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints" />-->
 
         <Button
             android:id="@+id/btn_logout"

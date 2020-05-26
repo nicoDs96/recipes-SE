@@ -6,10 +6,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
@@ -17,19 +19,23 @@ import com.example.recipeSE.search.SearchActivity;
 import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
 public class UserActivity extends AppCompatActivity {
+
+    private MaterialToolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        //TODO: copiare anche su altre classi della navbar
-        findViewById(R.id.showmenu).setOnClickListener(new View.OnClickListener() {
+        mToolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
+        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tuna</font>"));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 DrawerLayout drawer = findViewById(R.id.drawernavbar);
                 drawer.openDrawer(Gravity.LEFT);
             }
