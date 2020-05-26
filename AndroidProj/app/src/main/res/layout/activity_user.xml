@@ -14,6 +14,13 @@
         android:layout_height="match_parent"
         tools:context=".login.UserActivity">
 
+        <ImageButton
+            android:id="@+id/showmenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_sort_by_size"
+            tools:ignore="MissingConstraints" />
+
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="wrap_content"
@@ -40,7 +47,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/headernavbar"
         app:menu="@menu/menubar" />
-
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

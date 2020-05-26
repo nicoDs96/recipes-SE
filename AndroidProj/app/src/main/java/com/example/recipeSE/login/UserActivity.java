@@ -6,11 +6,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.search.SearchActivity;
 import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.AccessToken;
@@ -24,10 +26,16 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        //TODO: c'è un modo di non ripetere questo pezzo di codice per ogni activity ma linkare il codice alla resource xml???
-        DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawernavbar) ;
-        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        //TODO: copiare anche su altre classi della navbar
+        findViewById(R.id.showmenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DrawerLayout drawer = findViewById(R.id.drawernavbar);
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        NavigationView navigationView =  findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -46,10 +54,14 @@ public class UserActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Shoppinglist.class);
                     startActivity(intent);
                 }
-                else if (id == R.id.menu_settings)
+                else if (id == R.id.menu_map)
                 {
-                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class); //TODO: inserire classe settings
+                    Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
                     startActivity(intent);
+                }
+                else if (id == R.id.menu_logout)
+                {
+                    //TODO: cancellare variabile sessione e fare logout
                 }
                 return true;
             }

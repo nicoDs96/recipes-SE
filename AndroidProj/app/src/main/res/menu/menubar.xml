@@ -17,9 +17,13 @@
             android:icon="@android:drawable/checkbox_on_background"
             android:title="Shopping list" />
         <item
-            android:id="@+id/menu_settings"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="Settings" />
+            android:id="@+id/menu_map"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="Find markets" />
+        <item
+            android:id="@+id/menu_logout"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Log out" />
     </group>
 
 
