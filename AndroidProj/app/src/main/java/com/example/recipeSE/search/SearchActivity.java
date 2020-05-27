@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.recipeSE.R;
-import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.example.recipeSE.shoppinglist.ShoppigListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -71,8 +70,9 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 else if (id == R.id.menu_map)
                 {
-                    Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
-                    startActivity(intent);
+
+                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+
                 }
                 else if (id == R.id.menu_logout)
                 {
