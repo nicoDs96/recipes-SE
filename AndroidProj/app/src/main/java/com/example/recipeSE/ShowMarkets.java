@@ -34,10 +34,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 
+import static com.facebook.internal.FeatureManager.Feature.Places;
+
 public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private MaterialToolbar mToolbar;
 
     @Override
@@ -57,11 +59,11 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
         });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
 
@@ -90,8 +92,7 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             return;
         }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
@@ -100,25 +101,6 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
                             LatLng me = new LatLng(lat, lon);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(me));
                             mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-
-
-                            Geocoder geocoder = new Geocoder(getBaseContext());
-                            List<Address> addresses = null;
-                            try {
-                                Log.i("Debug: ","entro nel try statement");
-                                addresses = geocoder.getFromLocationName("supermercato", 10, lat-0.005, lon-0.005, lat+0.005, lon+0.005);
-                                Log.i("Debug: ","ho fatto addresses");
-                                Log.i("Debug: ",addresses.toString());
-                                if (addresses != null && !addresses.equals("")){
-                                    Log.i("Debug: ","entro nell'if statement");
-                                    search(addresses,mMap);
-                                }
-                            } catch (Exception e) {
-                                //todo: error message
-                            }
-
-
 
                         }
                     }
@@ -141,33 +123,5 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             }
         }
     }
-
-
-
-    protected void search(List<Address> addresses, GoogleMap mMap) {
-        Log.i("Debug: ","entro nella search func");
-        Address address = addresses.get(0);
-        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-        String addressText = String.format(
-                "%s, %s",
-                address.getMaxAddressLineIndex() > 0 ? address
-                        .getAddressLine(0) : "", address.getCountryName());
-
-        MarkerOptions markerOptions = new MarkerOptions();
-
-        markerOptions.position(latLng);
-        markerOptions.title(addressText);
-
-        //map1.clear();
-        mMap.addMarker(markerOptions);
-        //map1.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //map1.animateCamera(CameraUpdateFactory.zoomTo(15));
-        //locationTv.setText("Latitude:" + address.getLatitude() + ", Longitude:" + address.getLongitude());
-
-        Log.i("Debug: ","esco dalla search");
-    }
-
-
-
+    
 }
