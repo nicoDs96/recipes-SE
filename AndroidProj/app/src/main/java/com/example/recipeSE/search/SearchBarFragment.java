@@ -112,7 +112,7 @@ public class SearchBarFragment extends Fragment {
                 //perform the query and when results are available switch fragment to display result fragment
                 //select activity as method to prevent crash [instead of standard getViewLifecycleOwner()]
 
-                model.getRecipes(query).observe(getViewLifecycleOwnerLiveData().getValue(), queryObserver);
+                model.getRecipes(query).observe(getViewLifecycleOwner(), queryObserver);
             }
         });
 

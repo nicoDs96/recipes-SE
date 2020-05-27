@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             tools:context=".search.SearchActivity"
             android:id="@+id/search_activity">
-            
+
         <fragment class="com.example.recipeSE.search.SearchBarFragment"
             android:layout_weight="1"
             android:layout_width="match_parent"
