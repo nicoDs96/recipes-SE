@@ -1,9 +1,5 @@
 package com.example.recipeSE.login;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +11,6 @@ import android.widget.Toast;
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.search.SearchActivity;
-import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -28,7 +23,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,21 +132,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.testshop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Shoppinglist.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.mapbutton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

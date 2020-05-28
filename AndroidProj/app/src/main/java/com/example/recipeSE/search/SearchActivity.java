@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
 import com.example.recipeSE.savedRecipes.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.SharedViewModel;
@@ -36,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
         mDrawer =  findViewById(R.id.drawernavbar);
         //Add custom toolbar
         mToolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
-        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Search</font>"));
+        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tunagit </font>"));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +82,9 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 else if (id == R.id.menu_map)
                 {
-
                     mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
+                    startActivity(intent);
 
                 }
                 else if (id == R.id.menu_logout)

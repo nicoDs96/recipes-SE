@@ -1,26 +1,22 @@
 package com.example.recipeSE.login;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.search.SearchActivity;
-import com.example.recipeSE.shoppinglist.Shoppinglist;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -57,8 +53,7 @@ public class UserActivity extends AppCompatActivity {
                 }
                 else if (id == R.id.menu_shoppinglist)
                 {
-                    Intent intent = new Intent(getApplicationContext(), Shoppinglist.class);
-                    startActivity(intent);
+
                 }
                 else if (id == R.id.menu_map)
                 {
