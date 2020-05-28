@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,7 +20,6 @@ import java.util.List;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -127,7 +125,7 @@ public class DisplayRecipesFragment extends Fragment {
                 //get the query and pass it to the viewmodel
                 TextInputEditText fragmentSearchBar = (TextInputEditText)  getView().findViewById(R.id.searchbarRecView);
                 String inputQuery = fragmentSearchBar.getText().toString();
-                
+
 
                 if(!inputQuery.equals(model.getCurrentQuery())){
                    //if the query are the same the ViewModel won't change its internal data -> no

@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
+import com.example.recipeSE.savedRecipes.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.example.recipeSE.shoppinglist.ShoppigListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -50,13 +52,22 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.menu_search) {
-                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                    startActivity(intent);
+                    SearchBarFragment nextFrag= new SearchBarFragment();
+                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .addToBackStack(null)
+                            .commit();
                 }
                 else if (id == R.id.menu_savedrecipes)
                 {
-                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class); //TODO: inserire classe savedrecipes
-                    startActivity(intent);
+                    SavedRecipesFragment nextFrag= new SavedRecipesFragment();
+                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .addToBackStack(null)
+                            .commit();
+
                 }
                 else if (id == R.id.menu_shoppinglist)
                 {

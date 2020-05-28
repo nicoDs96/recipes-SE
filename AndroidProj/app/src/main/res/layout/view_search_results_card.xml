@@ -39,25 +39,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="8dp">
-            <!--><TextView
-                android:id="@+id/ingredients"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_gravity="left"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/supporting_text"
-                android:textColor="?android:attr/textColorSecondary" />
-            <TextView
-                android:id="@+id/quantities"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/supporting_text"
-                android:textColor="?android:attr/textColorSecondary" />
-                <-->
+            <!--Filled programmatically (see SearchResultAdapter) -->
         </LinearLayout>
 
         <LinearLayout

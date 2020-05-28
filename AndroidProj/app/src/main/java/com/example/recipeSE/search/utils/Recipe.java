@@ -5,13 +5,26 @@ import android.os.Build;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "saved_recipes")
 public class Recipe {
+
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name="id")
     private String _id;
+    @ColumnInfo(name="calories")
     private Integer calories;
+    @ColumnInfo(name="ingredient_quantity")
     private Map<String,String> ingredient_quantity;
+    @ColumnInfo(name="href")
     private String href;
+    @ColumnInfo(name="title")
     private String title;
 
     public Recipe(String id, Integer calories, Map<String, String> ingredient_quantity, String href, String title) {

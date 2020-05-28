@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.example.recipeSE.R;
 import com.google.android.material.card.MaterialCardView;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.RecipeViewHolder> {
 
     private List<Recipe> recipes;
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -40,8 +37,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         // each data item is just a string in this case
         public TextView title;
         public TextView cal;
-        public LinearLayout ingredientsQuantityContainer; //?
+        public LinearLayout ingredientsQuantityContainer;
         public Button href;
+        public Button save;
         public Context context;
 
         public RecipeViewHolder(@NonNull View itemView, TextView title, TextView cal,
@@ -51,6 +49,18 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             this.cal = cal;
             this.ingredientsQuantityContainer = ingredientsQuantityContainer;
             this.href = href;
+            this.context = context; //needed to add element to the parent view programmatically
+        }
+
+        //overload method TODO:test this delete the old one
+        public RecipeViewHolder(@NonNull View itemView, TextView title, TextView cal,
+                                LinearLayout ingredientsQuantityContainer, Button href,Button save, Context context) {
+            super(itemView);
+            this.title = title;
+            this.cal = cal;
+            this.ingredientsQuantityContainer = ingredientsQuantityContainer;
+            this.href = href;
+            this.save = save;
             this.context = context; //needed to add element to the parent view programmatically
         }
     }
@@ -63,8 +73,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @Override
     // Create new views (invoked by the layout manager)
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // create a new view
-        // TODO: replace textview vith cards with cards
+        // create a new view: a card containing all details
         MaterialCardView v = (MaterialCardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_search_results_card, parent, false);
 
@@ -75,6 +84,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 (TextView) v.findViewById(R.id.cal),
                 (LinearLayout) v.findViewById(R.id.ing_quantity_container),
                 (Button) v.findViewById(R.id.go2site),
+                (Button) v.findViewById(R.id.add_2_fav),
                 parent.getContext() );
 
         return vh;
@@ -92,8 +102,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                     createIngredientQuantityLayout(e.getKey().toString(),e.getValue().toString(),holder.context)
             );
         }
-
+        //set card title
         holder.title.setText(rec.getTitle());
+        //set calories if available
         Integer kc= rec.getCalories();
         String kcString="";
         if(kc == null){
@@ -102,11 +113,20 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             kcString = kc.toString();
         }
         holder.cal.setText("Kcal:\t"+kcString);
+
+        //add listener to go to the website
         holder.href.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rec.getHref()));
                 ContextCompat.startActivity(v.getContext(), browserIntent,null);
+            }
+        });
+        // add listener to save the recipe
+        holder.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add callback
             }
         });
     }
