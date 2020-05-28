@@ -2,6 +2,7 @@ package com.example.recipeSE.shoppinglist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,25 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                planetList.remove(position);
-                notifyItemRemoved(position);
-                removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
+                String elemToRemove = holder.text.getText().toString();
+                Integer idx = planetList.indexOf(elemToRemove);
+                if(idx > -1 ){
+                    Log.d("Item Removed:",elemToRemove);
+                    Log.d("Item Idx:",idx.toString());
+                    Log.d("Received Pos:",((Integer) position).toString());
+                    planetList.remove(elemToRemove);
+                    notifyItemRemoved(idx);
+                    removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
+
+                    //TODO remove debug code
+                    Log.d("DEBUG","deleteOnclick");
+                    printList(planetList);
+
+                }else{
+                    Log.e("Idx Error","Element Not Found");
+                }
+
+
 
             }
         });
@@ -87,4 +104,18 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
         return (HashSet<String>) prefs.getStringSet(key, new HashSet<String>());
     }
 
+    public void insertNewIngredient(String ingredient){
+        this.planetList.add(ingredient);
+        notifyItemInserted(planetList.size()-1);
+        //TODO remove debug code
+        Log.d("DEBUG","insertNewIngred");
+        printList(planetList);
+    }
+
+    private void printList(ArrayList<String> list){
+
+        for(Integer i=0; i<list.size(); i++){
+            Log.d(i.toString(),list.get(i));
+        }
+    }
 }

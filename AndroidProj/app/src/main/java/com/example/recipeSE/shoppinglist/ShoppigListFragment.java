@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ShoppigListFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private PlanetAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<String> planetList=new ArrayList();
     private MaterialToolbar mToolbar;
@@ -41,6 +41,7 @@ public class ShoppigListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final String key="ingredients"; //TODO: sostituire costante con variabile utente
+        //init the view with available ingredients and init the adapter
         displayIngr(key);
 
         getActivity().findViewById(R.id.addIngr).setOnClickListener(new View.OnClickListener() {
@@ -50,7 +51,8 @@ public class ShoppigListFragment extends Fragment {
                 if (!bar.getText().toString().equals("")) {
                     String ingr = bar.getText().toString();
                     addToSet(key,ingr);
-                    displayIngr(key);
+                    adapter.insertNewIngredient(ingr);
+                    //displayIngr(key);
                 }
             }
         });
