@@ -127,15 +127,7 @@ public class DisplayRecipesFragment extends Fragment {
                 //get the query and pass it to the viewmodel
                 TextInputEditText fragmentSearchBar = (TextInputEditText)  getView().findViewById(R.id.searchbarRecView);
                 String inputQuery = fragmentSearchBar.getText().toString();
-
-        getView().findViewById(R.id.searchButtonRecView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedViewModel m =  new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
-                TextInputEditText fragmentSearchBar = (TextInputEditText) (TextInputEditText) getView().findViewById(R.id.searchbarRecView);
-                m.getRecipes(fragmentSearchBar.getText().toString());
-            }
-        });
+                
 
                 if(!inputQuery.equals(model.getCurrentQuery())){
                    //if the query are the same the ViewModel won't change its internal data -> no
