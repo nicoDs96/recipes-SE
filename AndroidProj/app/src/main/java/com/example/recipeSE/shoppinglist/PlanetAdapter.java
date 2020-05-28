@@ -1,9 +1,7 @@
 package com.example.recipeSE.shoppinglist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +9,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import com.example.recipeSE.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetViewHolder> {
@@ -39,24 +36,26 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     }
 
     @Override
-    public void onBindViewHolder(final PlanetAdapter.PlanetViewHolder holder, int position) {
+    public void onBindViewHolder(final PlanetAdapter.PlanetViewHolder holder, final int position) {
         //TODO: checkbox backend (not mandatory)
         holder.text.setText(planetList.get(position));
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                planetList.remove(position);
+                notifyItemRemoved(position);
                 removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
-                Intent intent  = new Intent(context, Shoppinglist.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
+
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
         return planetList.size();
     }
+
 
     public static class PlanetViewHolder extends RecyclerView.ViewHolder{
         protected CheckBox box;
