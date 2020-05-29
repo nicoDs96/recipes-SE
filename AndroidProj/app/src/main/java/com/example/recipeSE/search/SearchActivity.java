@@ -10,7 +10,6 @@ import android.view.View;
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
-import com.example.recipeSE.savedRecipes.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.example.recipeSE.shoppinglist.ShoppigListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -37,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
         mDrawer =  findViewById(R.id.drawernavbar);
         //Add custom toolbar
         mToolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
-        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tunagit </font>"));
+        mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tuna</font>"));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +45,6 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         //Set listeners for sidebar
-        //TODO: replace intent with fragment switch
         NavigationView navigationView =  findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override

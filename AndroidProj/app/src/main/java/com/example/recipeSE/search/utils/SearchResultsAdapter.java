@@ -54,7 +54,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         //overload method TODO:test this delete the old one
         public RecipeViewHolder(@NonNull View itemView, TextView title, TextView cal,
-                                LinearLayout ingredientsQuantityContainer, Button href,Button save, Context context) {
+                                LinearLayout ingredientsQuantityContainer, Button href,Button save,
+                                Context context) {
             super(itemView);
             this.title = title;
             this.cal = cal;

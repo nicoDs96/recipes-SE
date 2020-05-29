@@ -15,10 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -38,20 +39,31 @@ public class SavedRecipesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSavedRecipesVM = new ViewModelProvider(getActivity()).get(SavedRecipesViewModel.class);
+        mSavedRecipesVM = new ViewModelProvider( requireActivity() ).get(SavedRecipesViewModel.class);
+
+        /*HashMap<String, String> m = new HashMap<String,String>();
+        m.put("pomodoro","qb");
+        mSavedRecipesVM.save(new Recipe("a",
+                19,
+                m,
+                "www.mipiacitu.it",
+                "Sample")
+        );*/
+        //LinkedList<Recipe> l = new LinkedList<Recipe>();
+
         mRecyclerView = view.findViewById(R.id.saved_recipes_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final SearchResultsAdapter adapter = new SearchResultsAdapter(new LinkedList<Recipe>());
-        mRecyclerView.setAdapter(adapter);
 
         mSavedRecipesVM.getAllSavedrecipe().observe(getActivity(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
+                final SearchResultsAdapter adapter = new SearchResultsAdapter(mSavedRecipesVM.getAllSavedrecipe().getValue());
+                mRecyclerView.setAdapter(adapter);
 
                 // update the adapter and notify
-
             }
         });
+
 
 
     }

@@ -52,7 +52,7 @@ class AsynkQuery implements Callable<List<Recipe>>  {
         try {
             Response response = client.newCall(request).execute();
             String resString = response.body().string();
-            Log.d("Server Response",resString); //log info
+            //Log.d("Server Response",resString.substring(0,100)+"... too long"); //log info
 
             // Register a custom deserializer with gson
             GsonBuilder gsonBuilder = new GsonBuilder();

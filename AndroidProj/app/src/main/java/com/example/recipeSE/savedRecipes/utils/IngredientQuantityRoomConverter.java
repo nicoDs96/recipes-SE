@@ -1,4 +1,4 @@
-package com.example.recipeSE.savedRecipes;
+package com.example.recipeSE.savedRecipes.utils;
 
 import java.util.HashMap;
 import java.util.Map;
