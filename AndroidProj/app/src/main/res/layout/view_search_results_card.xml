@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Save"
+                android:text="@string/save"
                 android:textColor="?android:attr/textColorSecondary"
                 app:icon="@drawable/ic_star_black_24dp"
                 app:iconTint="?android:attr/textColorSecondary"/>
@@ -66,10 +66,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Show"
+            android:text="@string/show"
             android:textColor="?android:attr/textColorSecondary"
             app:icon="@drawable/ic_link_black_24dp"
             app:iconTint="?android:attr/textColorSecondary"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textColor="?android:attr/textColorSecondary"
+                app:icon="@drawable/ic_baseline_close_24"
+                app:iconTint="?android:attr/textColorSecondary"/>
         </LinearLayout>
     </LinearLayout>
 

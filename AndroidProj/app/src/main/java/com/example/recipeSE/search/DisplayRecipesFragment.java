@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 import com.example.recipeSE.search.utils.SharedViewModel;
@@ -33,6 +34,7 @@ public class DisplayRecipesFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ProgressBar pBar;
     private Observer<String> errorObserver;
+    private SavedRecipesViewModel mSavedRecipesViewModel;
 
 
     @Nullable
@@ -64,9 +66,10 @@ public class DisplayRecipesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //use the view with layout created by onCreateView(...)
-        this.model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
+        model = new ViewModelProvider( requireActivity() ).get(SharedViewModel.class);
+        mSavedRecipesViewModel = new ViewModelProvider( requireActivity() ).get(SavedRecipesViewModel.class);
+        //init recycler view
         recyclerView = (RecyclerView) getView().findViewById(R.id.search_result_recycler_view);
-
         //to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -97,7 +100,7 @@ public class DisplayRecipesFragment extends Fragment {
                 }
 
                 //configure recycler view adapter with the observed object from the viewmodel
-                mAdapter = new SearchResultsAdapter(recipes);
+                mAdapter = new SearchResultsAdapter(recipes,mSavedRecipesViewModel,false);
                 recyclerView.setAdapter(mAdapter);
 
                 //remove the progress bar when the recycler view has finished to load all elements

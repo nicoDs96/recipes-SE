@@ -8,6 +8,19 @@
     android:id="@+id/diplay_saved_recipes_frag_id"
     android:background="@color/background_color"
     android:layout_marginTop="60dp">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/no_saved_recipe_text_view"
+        android:padding="8dp"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/no_saved_recipe_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:visibility="gone"
+        >
+    </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_recipes_recycler_view"

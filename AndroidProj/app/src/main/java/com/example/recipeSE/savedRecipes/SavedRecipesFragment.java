@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.recipeSE.R;
 import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
@@ -27,6 +29,7 @@ public class SavedRecipesFragment extends Fragment {
 
     private SavedRecipesViewModel mSavedRecipesVM;
     private RecyclerView mRecyclerView;
+    private TextView emptyResultText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,26 +44,25 @@ public class SavedRecipesFragment extends Fragment {
 
         mSavedRecipesVM = new ViewModelProvider( requireActivity() ).get(SavedRecipesViewModel.class);
 
-        /*HashMap<String, String> m = new HashMap<String,String>();
-        m.put("pomodoro","qb");
-        mSavedRecipesVM.save(new Recipe("a",
-                19,
-                m,
-                "www.mipiacitu.it",
-                "Sample")
-        );*/
-        //LinkedList<Recipe> l = new LinkedList<Recipe>();
+        emptyResultText= getView().findViewById(R.id.no_saved_recipe_text_view);
+
 
         mRecyclerView = view.findViewById(R.id.saved_recipes_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
         mSavedRecipesVM.getAllSavedrecipe().observe(getActivity(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
-                final SearchResultsAdapter adapter = new SearchResultsAdapter(mSavedRecipesVM.getAllSavedrecipe().getValue());
+                final SearchResultsAdapter adapter = new SearchResultsAdapter(
+                        mSavedRecipesVM.getAllSavedrecipe().getValue(), mSavedRecipesVM ,true);
                 mRecyclerView.setAdapter(adapter);
 
-                // update the adapter and notify
+                if(recipes.size() == 0){
+                    emptyResultText.setVisibility(View.VISIBLE);
+                }else{
+                    emptyResultText.setVisibility(View.GONE);
+                }
             }
         });
 
