@@ -260,9 +260,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<Void> call, Response<Void> response) {
 
                         if (response.code()==200){
-                            Toast.makeText(MainActivity.this,"Signe up succesfully",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Sign up succesfully",Toast.LENGTH_LONG).show();
                         }else if (response.code()==400){
-                            Toast.makeText(MainActivity.this,"ALready Signed up",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Already Signed up",Toast.LENGTH_LONG).show();
                         }
                     }
 
