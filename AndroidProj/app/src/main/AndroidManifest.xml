@@ -53,16 +53,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.UserActivity" />
-        <activity android:name=".login.MainActivity">
+        <activity android:name=".login.MainActivity"/>
 
-            <!--  -->
+        <activity android:name=".search.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".search.SearchActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -71,7 +70,6 @@
                 android:name="android.app.default_searchable"
                 android:value="query.SearchableActivity" />
         </activity>
-        <activity android:name=".shoppinglist.Shoppinglist" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

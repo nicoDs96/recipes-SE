@@ -1,4 +1,4 @@
-package com.example.recipeSE.savedRecipes;
+package com.example.recipeSE.savedRecipes.utils;
 
 import android.app.Application;
 
@@ -15,7 +15,7 @@ public class SavedRecipeRepository {
     SavedRecipeRepository(Application application){
         SavedRecipesRoomDB db = SavedRecipesRoomDB.getDatabase(application);
         mSavedRecipesDAO = db.savedRecipesDAO();
-        mSavedRecipes = mSavedRecipesDAO.getSavedRecipes();
+        mSavedRecipes =  mSavedRecipesDAO.getSavedRecipes();
     }
     LiveData<List<Recipe>> getAllSavedrecipes(){
         return mSavedRecipes;

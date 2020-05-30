@@ -1,4 +1,4 @@
-package com.example.recipeSE.savedRecipes;
+package com.example.recipeSE.savedRecipes.utils;
 
 import android.content.Context;
 

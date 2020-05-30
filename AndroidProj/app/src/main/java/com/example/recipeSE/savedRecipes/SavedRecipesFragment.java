@@ -10,15 +10,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.recipeSE.R;
+import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,6 +29,7 @@ public class SavedRecipesFragment extends Fragment {
 
     private SavedRecipesViewModel mSavedRecipesVM;
     private RecyclerView mRecyclerView;
+    private TextView emptyResultText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,20 +42,30 @@ public class SavedRecipesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSavedRecipesVM = new ViewModelProvider(getActivity()).get(SavedRecipesViewModel.class);
+        mSavedRecipesVM = new ViewModelProvider( requireActivity() ).get(SavedRecipesViewModel.class);
+
+        emptyResultText= getView().findViewById(R.id.no_saved_recipe_text_view);
+
+
         mRecyclerView = view.findViewById(R.id.saved_recipes_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final SearchResultsAdapter adapter = new SearchResultsAdapter(new LinkedList<Recipe>());
-        mRecyclerView.setAdapter(adapter);
+
 
         mSavedRecipesVM.getAllSavedrecipe().observe(getActivity(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
+                final SearchResultsAdapter adapter = new SearchResultsAdapter(
+                        mSavedRecipesVM.getAllSavedrecipe().getValue(), mSavedRecipesVM ,true);
+                mRecyclerView.setAdapter(adapter);
 
-                // update the adapter and notify
-
+                if(recipes.size() == 0){
+                    emptyResultText.setVisibility(View.VISIBLE);
+                }else{
+                    emptyResultText.setVisibility(View.GONE);
+                }
             }
         });
+
 
 
     }
