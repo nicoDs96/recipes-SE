@@ -26,6 +26,7 @@
     <string name="show">Show</string>
     <string name="save">Save</string>
     <string name="no_saved_recipe_text">You have not saved a recipe yet!</string>
+    <string name="preference_file_key_query">query_result_tmp_storage</string>
 
 
 </resources>

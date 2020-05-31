@@ -149,7 +149,7 @@ public class SearchBarFragment extends Fragment {
                 Data outputData = workInfo.getOutputData();
 
                 String key  = outputData.getString("query_result");
-                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE );
+                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE );
                 String result  = prefs.getString(key,null);
                 if(result!=null) {
                     List<Recipe> res = SearchBarFragment.resultStringToList(result);
@@ -157,9 +157,9 @@ public class SearchBarFragment extends Fragment {
 
                     //once the result in in memory delete it from persistence
                     SharedPreferences.Editor editor = getContext()
-                            .getSharedPreferences(getContext().getString(R.string.preference_file_key), Context.MODE_PRIVATE )
+                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE )
                             .edit();
-                    editor.clear();
+                    //editor.clear();
                     editor.remove("query_result");
                     editor.apply();
 

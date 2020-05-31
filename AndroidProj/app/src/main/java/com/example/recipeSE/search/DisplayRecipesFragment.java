@@ -28,6 +28,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.WorkInfo;
 
 public class DisplayRecipesFragment extends Fragment {
     private SharedViewModel model;
@@ -126,7 +128,6 @@ public class DisplayRecipesFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 //get the query and pass it to the viewmodel
                 TextInputEditText fragmentSearchBar = (TextInputEditText)  getView().findViewById(R.id.searchbarRecView);
                 String inputQuery = fragmentSearchBar.getText().toString();
@@ -140,7 +141,7 @@ public class DisplayRecipesFragment extends Fragment {
                     //show progress bar waiting for the results
                     showProgressBar();
                 }
-                model.getRecipes(inputQuery);//TODO: allign to new threading method
+                model.performQuery(inputQuery);
             }
         });
 
@@ -162,6 +163,47 @@ public class DisplayRecipesFragment extends Fragment {
         };
         //Observe status and display errors eventually
         model.status.observe(getViewLifecycleOwner(),errorObserver );
+
+        //observe background query status
+        model.getOutputWorkInfo().observe(getViewLifecycleOwner(), listOfWorkInfos -> {
+
+            // If there are no matching work info, do nothing
+            if (listOfWorkInfos == null || listOfWorkInfos.isEmpty()) {
+                return;
+            }
+
+            // We only care about the first (and only) work.
+            WorkInfo workInfo = listOfWorkInfos.get(0);
+
+            boolean finished = workInfo.getState().isFinished();
+            if (!finished) {
+                Log.d("SharedVM","not finished");
+            } else {
+                Log.d("SharedVM","finished");
+                Data outputData = workInfo.getOutputData();
+
+                String key  = outputData.getString("query_result");
+                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE );
+                String result  = prefs.getString(key,null);
+                if(result!=null) {
+                    List<Recipe> res = SearchBarFragment.resultStringToList(result);
+                    model.setresult(res);
+
+                    //once the result in in memory delete it from persistence
+                    SharedPreferences.Editor editor = getContext()
+                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE )
+                            .edit();
+                    //editor.clear();
+                    editor.remove("query_result");
+                    editor.apply();
+
+                }else{
+                    Log.wtf(this.getClass().getName(),"No result present");
+                }
+
+            }
+        });
+
 
 
     }
