@@ -1,31 +1,40 @@
 package com.example.recipeSE.search.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.example.recipeSE.R;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.work.Data;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-class AsynkQuery implements Callable<List<Recipe>>  {
+public class AsynkQuery extends Worker  {
 
     private String query;
-    public AsynkQuery(String query) {
-        this.query = query;
+
+    public AsynkQuery(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
     }
 
-    @Override
-    public List<Recipe> call() throws Exception {
+    /*Calls the api and returns the result*/
+    public String fetchData() throws Exception {
         /*
         * SEND THE QUERY TO THE API AND WAIT THE RESPONSE
         * */
@@ -35,6 +44,7 @@ class AsynkQuery implements Callable<List<Recipe>>  {
         String req = gson.toJson(new BodyQuery(query));
         System.out.println("req: "+ req);
 
+        //TODO replace with heroku address
         String address = "http://192.168.1.63:3000/recipes";
         //build the http client
         OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -49,26 +59,52 @@ class AsynkQuery implements Callable<List<Recipe>>  {
 
         //wait the response and convert it from JsonArray to List<Recipe>
         List<Recipe> list = new LinkedList<>();
+        String resString="";
         try {
             Response response = client.newCall(request).execute();
-            String resString = response.body().string();
+            resString = response.body().string();
             //Log.d("Server Response",resString.substring(0,100)+"... too long"); //log info
-
-            // Register a custom deserializer with gson
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Recipe.class, new RecipeDeserializer());
-
-            //create an instance of gson able to correctly parse the server response
-            Gson customGson = gsonBuilder.create();
-            //set the response type as list of recipes
-            Type listRecipesType = new TypeToken<List<Recipe>>() {}.getType();
-            //parse data
-            list = customGson.fromJson(resString, listRecipesType);
-
 
         } catch (IOException e) {
             throw  e;
         }
-        return list;
+        return resString;
+    }
+
+    private void serializeResult(String result) {
+        String key = "query_result";
+        //get a shared preference file
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
+                getApplicationContext().getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.putString(key, result);
+        editor.apply();
+    }
+
+    @NonNull
+    @Override
+    public Result doWork() {
+        Context applicationContext = getApplicationContext();
+
+        // Get the query performed by the user as Work Input data
+        // NOTE that if query is not initialized the user query will be ignored
+        this.query = getInputData().getString("query");
+
+        String result;
+        try {
+            result = fetchData();
+        } catch (Exception e) {
+            return Result.failure();
+        }
+        //write the result into the shared preference
+        this.serializeResult(result);
+
+
+        Data outputData = new Data.Builder()
+                .putString("query_result", "query_result")
+                .build();
+
+        return Result.success(outputData);
     }
 }

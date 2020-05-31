@@ -233,11 +233,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         editor.clear();
         editor.putStringSet(key, list);
         editor.apply();
-        String  debugList = "";
-        for(String el : list){
-            debugList += el+"; ";
-        }
-        Log.d("SharedPreference List",debugList);
+
     }
 
 

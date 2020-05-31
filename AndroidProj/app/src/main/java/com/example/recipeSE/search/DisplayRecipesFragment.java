@@ -1,5 +1,7 @@
 package com.example.recipeSE.search;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,7 +91,7 @@ public class DisplayRecipesFragment extends Fragment {
                 TextInputEditText fragmentSearchBar=(TextInputEditText) getView().findViewById(R.id.searchbarRecView);
                 fragmentSearchBar.setText(model.getCurrentQuery());
 
-                if(recipes.size()<1){
+                if(recipes!= null && recipes.size()<1){
                     //Disaply no resoult found text
                     getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.VISIBLE);
                     //  hide the progress bar
@@ -138,7 +140,7 @@ public class DisplayRecipesFragment extends Fragment {
                     //show progress bar waiting for the results
                     showProgressBar();
                 }
-                model.getRecipes(inputQuery);
+                model.getRecipes(inputQuery);//TODO: allign to new threading method
             }
         });
 

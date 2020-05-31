@@ -30,7 +30,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        //Just in case it is needed TODO: remove it
+        //Just in case it is needed
         this.model = new ViewModelProvider(this ).get(SharedViewModel.class);
         //get reference to sidebar
         mDrawer =  findViewById(R.id.drawernavbar);
