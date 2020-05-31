@@ -1,7 +1,6 @@
 package com.example.recipeSE.search;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -186,6 +185,7 @@ public class DisplayRecipesFragment extends Fragment {
                 SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );
                 String result  = prefs.getString("query_result",null);
                 if(result!=null) {
+
                     List<Recipe> res = SearchBarFragment.resultStringToList(result);
                     model.setresult(res);
 

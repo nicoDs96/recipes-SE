@@ -1,7 +1,6 @@
 package com.example.recipeSE.search;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.work.Data;
 import androidx.work.WorkInfo;
 
 public class SearchBarFragment extends Fragment {
@@ -148,11 +146,11 @@ public class SearchBarFragment extends Fragment {
             } else {
 
                 Log.d("ShareVM","finished");
-                Data outputData = workInfo.getOutputData();
 
                 SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getActivity().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );
                 String result  = prefs.getString("query_result",null);
                 if(result!=null) {
+
                     List<Recipe> res = SearchBarFragment.resultStringToList(result);
                     model.setresult(res);
 
