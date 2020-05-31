@@ -1,5 +1,6 @@
 package com.example.recipeSE.search.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -75,11 +76,11 @@ public class AsynkQuery extends Worker  {
         String key = "query_result";
         //get a shared preference file
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
-                getApplicationContext().getResources().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE);
+                getApplicationContext().getResources().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.putString(key, result);
-        editor.apply();
+        editor.commit();
     }
 
     @NonNull

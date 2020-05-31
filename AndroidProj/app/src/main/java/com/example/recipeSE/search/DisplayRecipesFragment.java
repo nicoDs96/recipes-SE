@@ -1,5 +1,6 @@
 package com.example.recipeSE.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -164,7 +165,7 @@ public class DisplayRecipesFragment extends Fragment {
         //Observe status and display errors eventually
         model.status.observe(getViewLifecycleOwner(),errorObserver );
 
-        //observe background query status
+        //observe background query statusgit push
         model.getOutputWorkInfo().observe(getViewLifecycleOwner(), listOfWorkInfos -> {
 
             // If there are no matching work info, do nothing
@@ -182,18 +183,17 @@ public class DisplayRecipesFragment extends Fragment {
                 Log.d("SharedVM","finished");
                 Data outputData = workInfo.getOutputData();
 
-                String key  = outputData.getString("query_result");
-                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE );
-                String result  = prefs.getString(key,null);
+                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );
+                String result  = prefs.getString("query_result",null);
                 if(result!=null) {
                     List<Recipe> res = SearchBarFragment.resultStringToList(result);
                     model.setresult(res);
 
                     //once the result in in memory delete it from persistence
-                    SharedPreferences.Editor editor = getContext()
-                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE )
+                    SharedPreferences.Editor editor = getActivity().getApplicationContext()
+                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE )
                             .edit();
-                    //editor.clear();
+                    editor.clear();
                     editor.remove("query_result");
                     editor.apply();
 

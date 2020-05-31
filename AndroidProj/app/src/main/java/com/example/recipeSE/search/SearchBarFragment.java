@@ -1,5 +1,6 @@
 package com.example.recipeSE.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,7 +81,7 @@ public class SearchBarFragment extends Fragment {
             //perform the query and when results are available switch fragment to display result fragment
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                if(recipes != null && submitted) {
+                if(recipes != null /*&& submitted*/) {
                     //Stop loading animation
                     hideProgressBar();
                     /*switch frame [load the result fragment]*/
@@ -145,27 +146,28 @@ public class SearchBarFragment extends Fragment {
             if (!finished) {
                 Log.d("ShareVM","not finished");
             } else {
+
                 Log.d("ShareVM","finished");
                 Data outputData = workInfo.getOutputData();
 
-                String key  = outputData.getString("query_result");
-                SharedPreferences prefs = getContext().getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE );
-                String result  = prefs.getString(key,null);
+                SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getActivity().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );
+                String result  = prefs.getString("query_result",null);
                 if(result!=null) {
                     List<Recipe> res = SearchBarFragment.resultStringToList(result);
                     model.setresult(res);
 
                     //once the result in in memory delete it from persistence
                     SharedPreferences.Editor editor = getContext()
-                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Context.MODE_PRIVATE )
+                            .getSharedPreferences(getContext().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE )
                             .edit();
-                    //editor.clear();
+                    editor.clear();
                     editor.remove("query_result");
-                    editor.apply();
+                    editor.commit();
 
                 }else{
                     Log.wtf(this.getClass().getName(),"No result present");
                 }
+
 
             }
         });
