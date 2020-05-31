@@ -53,10 +53,6 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
                     notifyItemRemoved(idx);
                     removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
 
-                    //TODO remove debug code
-                    Log.d("DEBUG","deleteOnclick");
-                    printList(planetList);
-
                 }else{
                     Log.e("Idx Error","Element Not Found");
                 }
@@ -107,9 +103,7 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
     public void insertNewIngredient(String ingredient){
         this.planetList.add(ingredient);
         notifyItemInserted(planetList.size()-1);
-        //TODO remove debug code
-        Log.d("DEBUG","insertNewIngred");
-        printList(planetList);
+
     }
 
     private void printList(ArrayList<String> list){
