@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -38,7 +39,7 @@ public class SharedViewModel extends AndroidViewModel {
         this.status.setValue("OK");
         this.data = new MutableLiveData<>();
         mWorkManager = WorkManager.getInstance(application);
-        mSavedWorkInfo = mWorkManager.getWorkInfosByTagLiveData("QUERY");
+        mSavedWorkInfo = mWorkManager.getWorkInfosForUniqueWorkLiveData("QUERY_REQ");
     }
 
     // A getter method for mSavedWorkInfo
@@ -102,7 +103,7 @@ public class SharedViewModel extends AndroidViewModel {
                 .addTag("QUERY")
                 .build();
 
-        mWorkManager.enqueue(qry_req);
+        mWorkManager.enqueueUniqueWork("QUERY_REQ", ExistingWorkPolicy.REPLACE,qry_req);
 
     }
 

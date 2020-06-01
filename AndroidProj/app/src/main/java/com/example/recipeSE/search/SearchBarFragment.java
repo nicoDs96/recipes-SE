@@ -79,7 +79,7 @@ public class SearchBarFragment extends Fragment {
             //perform the query and when results are available switch fragment to display result fragment
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                if(recipes != null /*&& submitted*/) {
+                if(recipes != null && submitted) {
                     //Stop loading animation
                     hideProgressBar();
                     /*switch frame [load the result fragment]*/
@@ -146,6 +146,7 @@ public class SearchBarFragment extends Fragment {
             } else {
 
                 Log.d("ShareVM","finished");
+                Log.d("Work Attemot Count: ",  String.valueOf(workInfo.getRunAttemptCount()) );
 
                 SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getActivity().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );
                 String result  = prefs.getString("query_result",null);
@@ -160,7 +161,7 @@ public class SearchBarFragment extends Fragment {
                             .edit();
                     editor.clear();
                     editor.remove("query_result");
-                    editor.commit();
+                    editor.apply();
 
                 }else{
                     Log.wtf(this.getClass().getName(),"No result present");
