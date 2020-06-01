@@ -10,12 +10,13 @@
             android:title="Search" />
         <item
             android:id="@+id/menu_savedrecipes"
-            android:icon="@android:drawable/btn_star_big_on"
+            android:icon="@drawable/ic_star_black_24dp"
             android:title="Saved recipe" />
         <item
             android:id="@+id/menu_shoppinglist"
-            android:icon="@android:drawable/checkbox_on_background"
-            android:title="Shopping list" />
+            android:icon="@drawable/ic_baseline_list_alt_24"
+            android:title="Shopping list"
+            android:iconTint="@color/browser_actions_title_color"/>
         <item
             android:id="@+id/menu_map"
             android:icon="@android:drawable/ic_dialog_map"
@@ -23,7 +24,8 @@
         <item
             android:id="@+id/menu_logout"
             android:icon="@android:drawable/ic_lock_power_off"
-            android:title="Log out" />
+            android:title="Log out"
+            />
     </group>
 
 
