@@ -3,6 +3,7 @@ package com.example.recipeSE.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,23 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //From map
+        Intent intent = getIntent();
+        if(intent.getStringExtra("frommap")!=null && intent.getStringExtra("frommap").equals("savedrecipes")){
+            SavedRecipesFragment nextFrag= new SavedRecipesFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
+        if(intent.getStringExtra("frommap")!=null && intent.getStringExtra("frommap").equals("shoppinglist")){
+            ShoppigListFragment nextFrag= new ShoppigListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
+
         //Just in case it is needed
         this.model = new ViewModelProvider(this ).get(SharedViewModel.class);
         //get reference to sidebar
@@ -43,6 +61,8 @@ public class SearchActivity extends AppCompatActivity {
                 mDrawer.openDrawer(Gravity.LEFT);
             }
         });
+
+
 
         //Set listeners for sidebar
         NavigationView navigationView =  findViewById(R.id.navigation);

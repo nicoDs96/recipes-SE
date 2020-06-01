@@ -38,7 +38,6 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
 
     @Override
     public void onBindViewHolder(final PlanetAdapter.PlanetViewHolder holder, final int position) {
-        //TODO: checkbox backend (not mandatory)
         holder.text.setText(planetList.get(position));
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override

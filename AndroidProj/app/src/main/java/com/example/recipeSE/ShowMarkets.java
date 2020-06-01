@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -23,6 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.recipeSE.login.MainActivity;
+import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
+import com.example.recipeSE.search.SearchActivity;
+import com.example.recipeSE.search.SearchBarFragment;
+import com.example.recipeSE.shoppinglist.ShoppigListFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,6 +41,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,13 +50,14 @@ import org.json.JSONObject;
 public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private DrawerLayout drawer;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_markets);
-
+        drawer = findViewById(R.id.drawernavbar);
         //configure toolbar
         MaterialToolbar mToolbar = findViewById(R.id.topAppBar);
         mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tuna</font>"));
@@ -57,10 +65,46 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             @SuppressLint("RtlHardcoded")
             @Override
             public void onClick(View v) {
-                DrawerLayout drawer = findViewById(R.id.drawernavbar);
                 drawer.openDrawer(Gravity.LEFT);
             }
         });
+
+        NavigationView navigationView =  findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.menu_search) {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
+                else if (id == R.id.menu_savedrecipes)
+                {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    intent.putExtra("frommap","savedrecipes");
+                    startActivity(intent);
+
+                }
+                else if (id == R.id.menu_shoppinglist)
+                {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    intent.putExtra("frommap","shoppinglist");
+                    startActivity(intent);
+                }
+                else if (id == R.id.menu_map)
+                {
+                    drawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
+                    startActivity(intent);
+
+                }
+                else if (id == R.id.menu_logout)
+                {
+                    //TODO: cancellare variabile sessione e fare logout
+                }
+                return true;
+            }
+        } );
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -106,11 +150,10 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
                             double lon = location.getLongitude();
                             LatLng me = new LatLng(lat, lon);
 
-                            loadNearByPlaces(lat, lon);
-
-                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(me, 16);
                             mMap.setMyLocationEnabled(true);
                             mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                            loadNearByPlaces(lat, lon);
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(me, 16);
                             mMap.animateCamera(cameraUpdate);
 
 
