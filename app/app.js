@@ -73,7 +73,6 @@ app.post('/recipeSe',async (req,res)=>{
     }
     catch (e) {
         console.error("Error : " + e);
-        console.log("Try to open mongo shell and run db.recipes.createIndex({ingredients_idx:\"text\"})\n");
         res.status(500).send("500 - Internal Error");
     }
 /*
