@@ -147,7 +147,7 @@ public class SearchBarFragment extends Fragment {
 
                 Log.d("ShareVM","finished");
                 if(workInfo.getState()== WorkInfo.State.FAILED){
-                model.status.setValue("FAIL");
+                    model.status.setValue("FAIL");
                 }
 
                 SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getActivity().getString(R.string.preference_file_key_query), Activity.MODE_PRIVATE );

@@ -45,8 +45,8 @@ public class AsynkQuery extends Worker  {
         String req = gson.toJson(new BodyQuery(query));
         System.out.println("req: "+ req);
 
-        //TODO replace with heroku address
-        String address = "http://192.168.1.63:3000/recipes";
+        //String address = "http://192.168.1.63:3000/recipes";
+        String address = getApplicationContext().getString(R.string.api_base_url) + "recipes";
         //build the http client
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         //create a body to append at request
