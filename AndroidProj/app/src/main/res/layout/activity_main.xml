@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.MainActivity">
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/goto_search"
@@ -18,42 +18,14 @@
         android:layout_marginRight="12dp"
         android:text="Test Search" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log in"
-        android:id="@+id/login"
-        android:layout_centerInParent="true"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign up"
-        android:id="@+id/signup"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/login"
-        />
-
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:background="@color/com_facebook_blue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_below="@+id/signup"
-        android:text="Facebook"
-        android:layout_marginVertical="5dp"/>
-
-    <Button
-        android:id="@+id/test_user"
+        android:id="@+id/login_fb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test user" />
-
-
+        android:layout_centerInParent="true"
+        android:background="@color/com_facebook_blue"
+        android:text="Facebook" />
 
 
 </RelativeLayout>

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
-import com.example.recipeSE.login.MainActivity;
+import com.example.recipeSE.MainActivity;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.RecipeDeserializer;
 import com.example.recipeSE.search.utils.SharedViewModel;
