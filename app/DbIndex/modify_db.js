@@ -6,7 +6,7 @@ const bar1 = new cliProgress.SingleBar({stream: process.stdout}, cliProgress.Pre
 bar1.render();
 
 
-const db_url = 'mongodb://localhost:27017';
+const db_url = 'mongodb+srv://dbuser:dbUser@recipesse-hiftj.gcp.mongodb.net/test?retryWrites=true&w=majority';
 const dbName = 'recipe-se';
 const collection_name='recipes';
 
