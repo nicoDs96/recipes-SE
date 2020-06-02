@@ -17,6 +17,13 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +44,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private LoginButton loginF;
-    private CallbackManager mCallbackManager;
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
     private static final String AUTH_TYPE = "rerequest";
     private final String TAG = this.getClass().getName();
-
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -51,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
+        prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
         if(prefs.getString("email", null) != null){
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent);
         }
 
+        //Facebook
         loginF = (LoginButton) findViewById(R.id.login_fb);
         loginF.setPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
         loginF.setAuthType(AUTH_TYPE);
@@ -82,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                             editor.apply();
 
                         }catch (JSONException e){
-                            Log.i("AAAAAAAAA","dentro il catch");
 
                         }
 
@@ -96,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 parameters.putString("fields", "id,first_name,middle_name,last_name,email,name_format,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
-                //TODO: vedere se serve intent anche qui
 
             }
 
@@ -113,7 +118,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, 1);
+            }
 
+
+        });
 
         //TODO: remove it when no more needed (clear app design is ready)
         findViewById(R.id.goto_search).setOnClickListener(new View.OnClickListener() {
@@ -129,7 +147,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == 1) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+
         callbackManager.onActivityResult(requestCode , resultCode, data);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.i("AAAAAAAAAAA","account ottenuto");
+            // Signed in successfully
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.putString("sessionkey", account.getEmail());
+            editor.apply();
+            Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(intent);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
     }
 
     private void logGraphInfos(JSONObject object){
@@ -137,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             String email = object.getString("email");
             String id = object.getString("id");
             String first_name = object.getString("first_name");
-            //String middle_name = object.getString("middle_name");
             String last_name = object.getString("last_name");
             Log.d("GraphRESPONSE", "Email: "+email+"\nid: "+id+"\nFirstName: "+first_name
                     +"\nLastName: "+last_name);
