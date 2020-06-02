@@ -1,7 +1,7 @@
 var express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 
-const db_url = 'he';
+const db_url = 'mongodb+srv://dbuser:dbUser@recipesse-hiftj.gcp.mongodb.net/test?retryWrites=true&w=majority';
 const dbName = 'recipe-se';
 const collection_name = 'recipes';
 const collection_users = 'users';
