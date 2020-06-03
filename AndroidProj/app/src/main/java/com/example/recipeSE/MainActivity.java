@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         //Facebook
         loginF = (LoginButton) findViewById(R.id.login_fb);
         loginF.setPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
-        loginF.setAuthType(AUTH_TYPE);
+        //loginF.setAuthType(AUTH_TYPE);
+        // If using in a fragment
+        //loginButton.setFragment(this);
 
 
 
