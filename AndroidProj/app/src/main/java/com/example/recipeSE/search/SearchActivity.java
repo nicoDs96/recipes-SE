@@ -1,12 +1,15 @@
 package com.example.recipeSE.search;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.recipeSE.MainActivity;
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
@@ -115,6 +118,14 @@ public class SearchActivity extends AppCompatActivity {
                     //TODO: cancellare variabile sessione e fare logout e riportare al fragment di login
                     //If facebook
                     LoginManager.getInstance().logOut();
+
+                    SharedPreferences prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear();
+                    editor.putString("sessionkey", null);
+                    editor.apply();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 }
                 return true;
             }

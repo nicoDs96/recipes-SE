@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mAuthProvider="fb";
         prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
         Log.i(TAG,"SESSIONKEY: " + prefs.getString("sessionkey", null));
-        if(prefs.getString("prova", null) != null){ //todo:sostituire prova con sessionkey
+        if(prefs.getString("sessionkey", null) != null){
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent);
         }
