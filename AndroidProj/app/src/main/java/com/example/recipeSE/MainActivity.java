@@ -16,6 +16,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -77,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
-        loginF.registerCallback(callbackManager, new FacebookCallback<com.facebook.login.LoginResult>() {
+        loginF.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(com.facebook.login.LoginResult loginResult) {
+            public void onSuccess(LoginResult loginResult) {
                 Log.i(TAG,"inside on success");
                 String accesstoken = loginResult.getAccessToken().getToken();
                 setResult(RESULT_OK);
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+        
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
