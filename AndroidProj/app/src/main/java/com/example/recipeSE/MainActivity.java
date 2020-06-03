@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuthProvider="fb";
         prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
-        if(prefs.getString("email", null) != null){
+        Log.i(TAG,"SESSIONKEY: " + prefs.getString("sessionkey", null));
+        if(prefs.getString("prova", null) != null){ //todo:sostituire prova con sessionkey
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent);
         }
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.clear();
                             editor.putString("sessionkey", object.getString("email"));
                             editor.apply();
+                            Log.i(TAG,"SESSIONKEY: " + prefs.getString("sessionkey", null));
 
                         }catch (JSONException e){
 
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             editor.clear();
             editor.putString("sessionkey", account.getEmail());
             editor.apply();
+            Log.i(TAG,"SESSIONKEY: " + prefs.getString("sessionkey", null));
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent);
         } catch (ApiException e) {
