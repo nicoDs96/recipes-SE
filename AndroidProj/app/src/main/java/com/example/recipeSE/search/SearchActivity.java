@@ -16,6 +16,9 @@ import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.example.recipeSE.shoppinglist.ShoppigListFragment;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -118,6 +121,12 @@ public class SearchActivity extends AppCompatActivity {
                     //TODO: cancellare variabile sessione e fare logout e riportare al fragment di login
                     //If facebook
                     LoginManager.getInstance().logOut();
+                    //if google
+                    GoogleSignInOptions gso = new GoogleSignInOptions.
+                            Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                            build();
+                    GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(getApplicationContext(),gso);
+                    googleSignInClient.signOut();
 
                     SharedPreferences prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
                     SharedPreferences.Editor editor = prefs.edit();
