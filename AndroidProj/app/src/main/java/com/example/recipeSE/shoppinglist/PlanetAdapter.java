@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.recipeSE.R;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +48,9 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
                     Log.d("Received Pos:",((Integer) position).toString());
                     planetList.remove(elemToRemove);
                     notifyItemRemoved(idx);
-                    removeFromSet("ingredients",holder.text.getText().toString()); //TODO: sostituire costante
+
+                    SharedPreferences session = context.getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
+                    removeFromSet(session.getString("sessionkey", null),holder.text.getText().toString());
 
                 }else{
                     Log.e("Idx Error","Element Not Found");

@@ -39,8 +39,8 @@ public class ShoppigListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        final String key="ingredients"; //TODO: sostituire costante con variabile utente
+        SharedPreferences session = this.getActivity().getSharedPreferences("sessionuser", Context.MODE_PRIVATE);
+        final String key = session.getString("sessionkey", null);
         //init the view with available ingredients and init the adapter
         displayIngr(key);
 

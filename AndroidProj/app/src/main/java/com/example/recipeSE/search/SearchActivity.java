@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.recipeSE.MainActivity;
 import com.example.recipeSE.R;
 import com.example.recipeSE.ShowMarkets;
@@ -22,7 +21,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -36,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     private MaterialToolbar mToolbar;
     private DrawerLayout mDrawer;
     private String TAG;
+    private SharedPreferences session;
 
 
     @Override
@@ -43,7 +42,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         TAG = this.getLocalClassName();
         setContentView(R.layout.activity_search);
-
+        session = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
         //From map
         Intent intent = getIntent();
         if(intent.getStringExtra("frommap")!=null && intent.getStringExtra("frommap").equals("savedrecipes")){
@@ -119,7 +118,6 @@ public class SearchActivity extends AppCompatActivity {
                 else if (id == R.id.menu_logout)
                 {
 
-                    //TODO: cancellare variabile sessione e fare logout e riportare al fragment di login
                     //If facebook
                     LoginManager.getInstance().logOut();
 
@@ -127,12 +125,10 @@ public class SearchActivity extends AppCompatActivity {
                     GoogleSignInOptions gso = new GoogleSignInOptions.
                             Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
                             build();
-
                     GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(getApplicationContext(),gso);
                     googleSignInClient.signOut();
 
-                    SharedPreferences prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
-                    SharedPreferences.Editor editor = prefs.edit();
+                    SharedPreferences.Editor editor = session.edit();
                     editor.clear();
                     editor.putString("sessionkey", null);
                     editor.apply();

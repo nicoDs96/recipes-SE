@@ -146,14 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //TODO: remove it when no more needed (clear app design is ready)
-        findViewById(R.id.goto_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

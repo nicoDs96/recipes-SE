@@ -2,7 +2,9 @@ package com.example.recipeSE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,11 +14,13 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,6 +28,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.recipeSE.search.SearchActivity;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -48,6 +56,7 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
     private GoogleMap mMap;
     private DrawerLayout drawer;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private final String TAG = this.getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,42 +74,51 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             }
         });
 
-        NavigationView navigationView =  findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.menu_search) {
                     Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                     startActivity(intent);
-                }
-                else if (id == R.id.menu_savedrecipes)
-                {
+                } else if (id == R.id.menu_savedrecipes) {
                     Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                    intent.putExtra("frommap","savedrecipes");
+                    intent.putExtra("frommap", "savedrecipes");
                     startActivity(intent);
 
-                }
-                else if (id == R.id.menu_shoppinglist)
-                {
+                } else if (id == R.id.menu_shoppinglist) {
                     Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                    intent.putExtra("frommap","shoppinglist");
+                    intent.putExtra("frommap", "shoppinglist");
                     startActivity(intent);
-                }
-                else if (id == R.id.menu_map)
-                {
+                } else if (id == R.id.menu_map) {
                     drawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
                     startActivity(intent);
 
-                }
-                else if (id == R.id.menu_logout)
-                {
-                    //TODO: cancellare variabile sessione e fare logout
+                } else if (id == R.id.menu_logout) {
+                    //If facebook
+                    LoginManager.getInstance().logOut();
+
+                    //if google
+                    GoogleSignInOptions gso = new GoogleSignInOptions.
+                            Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                            build();
+
+                    GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
+                    googleSignInClient.signOut();
+
+                    SharedPreferences prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear();
+                    editor.putString("sessionkey", null);
+                    editor.apply();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
                 }
                 return true;
             }
-        } );
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -139,12 +157,13 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
         }
 
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            double lat = location.getLatitude();
-                            double lon = location.getLongitude();
-                            LatLng me = new LatLng(lat, lon);
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+                    LatLng me = new LatLng(lat, lon);
+
 
                             mMap.setMyLocationEnabled(true);
                             mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -163,7 +182,6 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
             @SuppressLint("LongLogTag")
             @Override
             public void onFailure(@NonNull Exception e) {
-                // TODO: Handle the error.
                 Log.i("Errore nel getLastLocation: ", e.getMessage());
             }
         });
@@ -202,7 +220,7 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
+                        new GeneralErrorDialog().showNow(getSupportFragmentManager(), TAG);
                     }
                 });
 

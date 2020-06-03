@@ -22,7 +22,7 @@ public class GeneralErrorDialog extends DialogFragment {
                 .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
-                        Intent intent = new Intent(getContext(), SearchActivity.class);
+                        Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
 
                     }
