@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private CallbackManager callbackManager;
     private SharedPreferences prefs;
+    private String mAuthProvider;
 
 
     @Override
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuthProvider="fb";
         prefs = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
         if(prefs.getString("email", null) != null){
             Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         loginF = (LoginButton) findViewById(R.id.login_fb);
         loginF.setPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
         loginF.setAuthType(AUTH_TYPE);
+
+
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAuthProvider="gl";
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 1);
             }
@@ -146,22 +151,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == 1) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+
+        switch (mAuthProvider){
+            case "fb":
+                callbackManager.onActivityResult(requestCode , resultCode, data);
+                break;
+
+            case "gl":
+                // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+                if (requestCode == 1) {
+                    // The Task returned from this call is always completed, no need to attach
+                    // a listener.
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                    handleSignInResult(task);
+                }
+                break;
+
+            default:
+                new GeneralErrorDialog().showNow(getSupportFragmentManager(), TAG);
         }
 
-        callbackManager.onActivityResult(requestCode , resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.i("AAAAAAAAAAA","account ottenuto");
+            Log.i("handleSignInResultGOOGL","account ottenuto");
             // Signed in successfully
             SharedPreferences.Editor editor = prefs.edit();
             editor.clear();
@@ -173,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            e.printStackTrace();
+            //Log.d(TAG, );
         }
     }
 

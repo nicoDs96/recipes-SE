@@ -3,7 +3,6 @@ package com.example.recipeSE.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.example.recipeSE.ShowMarkets;
 import com.example.recipeSE.savedRecipes.SavedRecipesFragment;
 import com.example.recipeSE.search.utils.SharedViewModel;
 import com.example.recipeSE.shoppinglist.ShoppigListFragment;
+import com.facebook.login.LoginManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,9 +26,13 @@ public class SearchActivity extends AppCompatActivity {
     private SharedViewModel model;
     private MaterialToolbar mToolbar;
     private DrawerLayout mDrawer;
+    private String TAG;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TAG = this.getLocalClassName();
         setContentView(R.layout.activity_search);
 
         //From map
@@ -107,7 +111,10 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 else if (id == R.id.menu_logout)
                 {
-                    //TODO: cancellare variabile sessione e fare logout
+
+                    //TODO: cancellare variabile sessione e fare logout e riportare al fragment di login
+                    //If facebook
+                    LoginManager.getInstance().logOut();
                 }
                 return true;
             }

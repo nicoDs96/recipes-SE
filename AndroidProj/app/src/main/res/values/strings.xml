@@ -28,6 +28,9 @@
     <string name="no_saved_recipe_text">You have not saved a recipe yet!</string>
     <string name="preference_file_key_query">query_result_tmp_storage</string>
     <string name="api_base_url">https://intense-peak-78648.herokuapp.com/</string>
+    <string name="generic_error_title">Error</string>
+    <string name="generic_error_text">We are sorry but something went wrong. Retry!</string>
+    <string name="ok">Ok</string>
 
 
 </resources>
