@@ -121,10 +121,12 @@ public class SearchActivity extends AppCompatActivity {
                     //TODO: cancellare variabile sessione e fare logout e riportare al fragment di login
                     //If facebook
                     LoginManager.getInstance().logOut();
+
                     //if google
                     GoogleSignInOptions gso = new GoogleSignInOptions.
                             Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
                             build();
+
                     GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(getApplicationContext(),gso);
                     googleSignInClient.signOut();
 
@@ -135,13 +137,13 @@ public class SearchActivity extends AppCompatActivity {
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
+
+
                 }
                 return true;
             }
-        } );
+        });
 
     }
-
-
 
 }

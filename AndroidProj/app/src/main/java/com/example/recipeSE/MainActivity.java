@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton loginF;
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
-    private static final String AUTH_TYPE = "rerequest";
+    private static final String AUTH_TYPE = "request";
     private final String TAG = this.getClass().getName();
     private CallbackManager callbackManager;
     private SharedPreferences prefs;
