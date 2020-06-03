@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
                 Log.i(TAG,"facebook login Error");
-                Log.getStackTraceString(error);
+                Log.i(TAG, Log.getStackTraceString(error));
             }
         });
 
