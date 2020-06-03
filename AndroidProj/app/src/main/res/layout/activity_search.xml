@@ -32,20 +32,20 @@
             />
     </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <FrameLayout
+            android:background="@color/background_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".search.SearchActivity"
             android:id="@+id/search_activity">
 
         <fragment class="com.example.recipeSE.search.SearchBarFragment"
+            android:id="@+id/fragment"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-        </LinearLayout>
+        </FrameLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

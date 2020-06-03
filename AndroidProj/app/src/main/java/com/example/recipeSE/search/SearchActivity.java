@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +23,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -72,8 +75,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-
         //Set listeners for sidebar
         NavigationView navigationView =  findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -84,7 +85,7 @@ public class SearchActivity extends AppCompatActivity {
                     SearchBarFragment nextFrag= new SearchBarFragment();
                     mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .replace(R.id.search_activity, nextFrag, "SearchBarFragment")
                             .addToBackStack(null)
                             .commit();
                 }
@@ -93,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                     SavedRecipesFragment nextFrag= new SavedRecipesFragment();
                     mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .replace(R.id.search_activity, nextFrag, "SavedRecipesFragment")
                             .addToBackStack(null)
                             .commit();
 
@@ -103,7 +104,7 @@ public class SearchActivity extends AppCompatActivity {
                     ShoppigListFragment nextFrag= new ShoppigListFragment();
                     mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .replace(R.id.search_activity, nextFrag, "ShoppigListFragment")
                             .addToBackStack(null)
                             .commit();
 
@@ -146,4 +147,47 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(getSupportFragmentManager().getBackStackEntryCount() >0){
+            //save the current fragment if any
+            String currFrag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+            outState.putString("fragment_displayed",currFrag);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String fragTag = savedInstanceState.getString("fragment_displayed");
+        if (fragTag !=null){
+            Fragment nextFrag;
+            switch (fragTag){
+                case "SearchBarFragment":
+                    nextFrag= new SearchBarFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.search_activity, nextFrag, "SearchBarFragment")
+                            .addToBackStack(null)
+                            .commit();
+                    break;
+                case "SavedRecipesFragment":
+                    nextFrag= new SavedRecipesFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.search_activity, nextFrag, "SavedRecipesFragment")
+                            .addToBackStack(null)
+                            .commit();
+                    break;
+                case "ShoppigListFragment":
+                    nextFrag= new ShoppigListFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.search_activity, nextFrag, "ShoppigListFragment")
+                            .addToBackStack(null)
+                            .commit();
+                    break;
+                default:
+                    Log.e(TAG,"Not recoginzed fragment");
+            }
+        }
+    }
 }

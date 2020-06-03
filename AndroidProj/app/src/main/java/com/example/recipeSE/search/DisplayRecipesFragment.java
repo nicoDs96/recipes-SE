@@ -54,7 +54,7 @@ public class DisplayRecipesFragment extends Fragment {
                 // Handle the back button event
                 SearchBarFragment nextFrag= new SearchBarFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.search_activity, nextFrag, "searchBarFragment")
+                        .replace(R.id.search_activity, nextFrag, "SearchBarFragment")
                         .addToBackStack(null)
                         .commit();
             }
@@ -209,7 +209,10 @@ public class DisplayRecipesFragment extends Fragment {
     }
 
     private void showProgressBar(){
+
         pBar.setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.noResultErorrTextView).setVisibility(View.GONE);
+
     }
     private void hideProgressBar(){
         pBar.setVisibility(View.GONE);

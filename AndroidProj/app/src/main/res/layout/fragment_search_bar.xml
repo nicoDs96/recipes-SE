@@ -4,73 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/searchbar_frag_id"
-    android:layout_marginTop="60dp">
+    >
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="fill_parent"
-        android:layout_height="300dp"
-        android:src="@drawable/icona_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp"/>
-    <Button
-        android:id="@+id/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:text="@android:string/search_go"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.071" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editText"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
-        android:ems="10"
-        android:hint="@string/search_hint"
-        android:inputType="textPersonName"
-        android:maxLines="1"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.04000002">
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.google.android.material.textfield.TextInputEditText
-
-            android:id="@+id/materialInputText"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/searchbar_frag_id"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:text="@android:string/search_go"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.925"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText"
+                app:layout_constraintVertical_bias="0.071" />
 
-    <ProgressBar
-        android:id="@+id/searchBarProgress"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="86dp"
-        android:layout_marginRight="86dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="60dp"
+                android:src="@drawable/icona_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/searchBarProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="86dp"
+                android:layout_marginRight="86dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/search"
+                app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginStart="24dp"
+                android:ems="10"
+                android:hint="@string/search_hint"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                app:layout_constraintVertical_bias="0.04000002">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:id="@+id/materialInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/editText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

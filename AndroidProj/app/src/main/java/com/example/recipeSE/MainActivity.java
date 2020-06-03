@@ -35,6 +35,7 @@ import java.util.Set;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError(FacebookException error) {
                 Log.i(TAG,"facebook login Error");
                 Log.i(TAG, Log.getStackTraceString(error));
+                new GeneralErrorDialog().showNow(getSupportFragmentManager(), TAG);
             }
         });
 
@@ -195,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             e.printStackTrace();
+            new GeneralErrorDialog().showNow(getSupportFragmentManager(),TAG);
             //Log.d(TAG, );
         }
     }

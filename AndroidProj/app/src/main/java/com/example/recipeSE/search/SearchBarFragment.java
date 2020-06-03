@@ -85,7 +85,7 @@ public class SearchBarFragment extends Fragment {
                     /*switch frame [load the result fragment]*/
                     DisplayRecipesFragment nextFrag = new DisplayRecipesFragment();
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.search_activity, nextFrag, "findThisFragment")
+                            .replace(R.id.search_activity, nextFrag, "DisplayRecipesFragment")
                             .addToBackStack(null)
                             .commit();
                 }
