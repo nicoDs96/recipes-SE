@@ -30,6 +30,7 @@
     <string name="generic_error_title">Error</string>
     <string name="generic_error_text">We are sorry but something went wrong. Retry!</string>
     <string name="ok">Ok</string>
+    <string name="auth_req_message">Please, authenticate yourself to use the app.</string>
 
 
 </resources>
