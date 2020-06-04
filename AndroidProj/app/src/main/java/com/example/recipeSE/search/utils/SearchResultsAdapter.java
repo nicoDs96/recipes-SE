@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.recipeSE.GeneralErrorDialog;
 import com.example.recipeSE.R;
 import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
 import com.google.android.material.card.MaterialCardView;
@@ -221,7 +222,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
     //utility called to add a new value into the shared preference persistent storage
     private void appendToSharedPreference(Context c, String newIngredient){
-        String key = "ingredients";
+        SharedPreferences session = c.getSharedPreferences("sessionuser", Context.MODE_PRIVATE);
+        String key = session.getString("sessionkey", null);
+        if(key == null){
+            new GeneralErrorDialog();
+            return;
+        }
         //get a file with the ingredient list
         SharedPreferences sharedPref = c.getSharedPreferences(
                 c.getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
