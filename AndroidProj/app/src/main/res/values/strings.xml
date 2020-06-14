@@ -31,6 +31,11 @@
     <string name="generic_error_text">We are sorry but something went wrong. Retry!</string>
     <string name="ok">Ok</string>
     <string name="auth_req_message">Please, authenticate yourself to use the app.</string>
+    <string name="sidebar_search">Search</string>
+    <string name="sidebar_saved_recipe">Saved recipe</string>
+    <string name="sidebar_shopping_list">Shopping list</string>
+    <string name="sidebar_find_markets">Find markets</string>
+    <string name="sidebar_log_out">Log out</string>
 
 
 </resources>

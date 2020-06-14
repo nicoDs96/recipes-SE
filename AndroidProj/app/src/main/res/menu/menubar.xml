@@ -7,24 +7,25 @@
         <item
             android:id="@+id/menu_search"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="Search" />
+            android:title="@string/sidebar_search" />
         <item
             android:id="@+id/menu_savedrecipes"
             android:icon="@drawable/ic_star_black_24dp"
-            android:title="Saved recipe" />
+            android:title="@string/sidebar_saved_recipe" />
         <item
             android:id="@+id/menu_shoppinglist"
             android:icon="@drawable/ic_baseline_list_alt_24"
-            android:title="Shopping list"
+            android:title="@string/sidebar_shopping_list"
             android:iconTint="@color/browser_actions_title_color"/>
         <item
             android:id="@+id/menu_map"
             android:icon="@android:drawable/ic_dialog_map"
-            android:title="Find markets" />
+            android:title="@string/sidebar_find_markets" />
         <item
             android:id="@+id/menu_logout"
             android:icon="@android:drawable/ic_lock_power_off"
-            android:title="Log out"
+            android:title="@string/sidebar_log_out"
+            android:visible="false"
             />
     </group>
 
