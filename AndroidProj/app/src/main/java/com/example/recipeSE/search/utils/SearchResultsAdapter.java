@@ -130,7 +130,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             @Override
             public void onClick(View v) {
                 mSavedRecipesViewModel.save(rec);
-                Toast.makeText(holder.context,rec.getTitle()+" Saved",Toast.LENGTH_SHORT).show();
+                Toast.makeText(holder.context,rec.getTitle()+" added to Favourite!",Toast.LENGTH_SHORT).show();
             }
         });
 

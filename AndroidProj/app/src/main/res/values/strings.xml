@@ -15,7 +15,7 @@
     <string name="title_activity_show_markets">Map</string>
     <string name="preference_file_key">ingredient_list</string>
     <string name="Tuna">Tuna</string>
-    <string name="favorite">Saved Recipes</string>
+    <string name="favorite">Favourite Recipes</string>
     <string name="content_description_search">Search</string>
     <string name="search">Search</string>
     <string name="menu">menu</string>
@@ -23,8 +23,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete">Delete</string>
     <string name="show">Show</string>
-    <string name="save">Save</string>
-    <string name="no_saved_recipe_text">You have not saved a recipe yet!</string>
+    <string name="save">Add to Favourite</string>
+    <string name="no_saved_recipe_text">You have not favourite recipes yet!</string>
     <string name="preference_file_key_query">query_result_tmp_storage</string>
     <string name="api_base_url">https://intense-peak-78648.herokuapp.com/</string>
     <string name="generic_error_title">Error</string>
@@ -32,7 +32,7 @@
     <string name="ok">Ok</string>
     <string name="auth_req_message">Please, authenticate yourself to use the app.</string>
     <string name="sidebar_search">Search</string>
-    <string name="sidebar_saved_recipe">Saved recipe</string>
+    <string name="sidebar_saved_recipe">Favourite recipes</string>
     <string name="sidebar_shopping_list">Shopping list</string>
     <string name="sidebar_find_markets">Find markets</string>
     <string name="sidebar_log_out">Log out</string>

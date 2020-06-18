@@ -43,6 +43,10 @@ public class SearchActivity extends AppCompatActivity {
         TAG = this.getLocalClassName();
         setContentView(R.layout.activity_search);
         session = getSharedPreferences("sessionuser", Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = session.edit();
+        editor.clear();
+        editor.putString("sessionkey", "sample-user-email");
+        editor.apply();
         //From map
         Intent intent = getIntent();
         if(intent.getStringExtra("frommap")!=null && intent.getStringExtra("frommap").equals("savedrecipes")){
