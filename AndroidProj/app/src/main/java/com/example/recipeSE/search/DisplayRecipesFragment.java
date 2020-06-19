@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +145,22 @@ public class DisplayRecipesFragment extends Fragment {
                 model.performQuery(inputQuery);
             }
         });
+
+        /*
+        * Set enter key pressed listener so that it triggers a search
+        * */
+        TextInputEditText fragmentSearchBar=(TextInputEditText) getView().findViewById(R.id.searchbarRecView);
+        fragmentSearchBar.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==KeyEvent.KEYCODE_ENTER) {
+                    getView().findViewById(R.id.searchButtonRecView).performClick();
+                    Log.d("enter key pressed","enter key pressed triggering search");
+                }
+                return false;
+            }
+        });
+
 
         //define the error observer
         errorObserver = new Observer<String>() {

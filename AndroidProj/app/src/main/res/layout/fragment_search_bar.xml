@@ -85,7 +85,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/editText" />
+                    app:layout_constraintTop_toTopOf="@+id/editText"
+                    android:singleLine="true"
+                    android:lines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

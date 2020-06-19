@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipeSE.R;
@@ -160,7 +163,19 @@ public class SearchBarFragment extends Fragment {
 
             }
         });
-
+        /*
+        * Enter key listener: on press trigger search
+        * */
+        mTextInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==KeyEvent.KEYCODE_ENTER) {
+                    mSearchButton.performClick();
+                    Log.d("enter key pressed","enter key pressed triggering search");
+                }
+                return false;
+            }
+        });
 
 
     }
