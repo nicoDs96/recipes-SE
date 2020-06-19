@@ -36,6 +36,8 @@
     <string name="sidebar_shopping_list">Shopping list</string>
     <string name="sidebar_find_markets">Find markets</string>
     <string name="sidebar_log_out">Log out</string>
+    <string name="action_text">OK</string>
+    <string name="text_label">Tap on ingredients to add them to the shopping list</string>
 
 
 </resources>

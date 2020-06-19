@@ -20,9 +20,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,7 +34,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private SharedViewModel model;
     private MaterialToolbar mToolbar;
-    private DrawerLayout mDrawer;
+    private CoordinatorLayout mDrawer;
     private String TAG;
     private SharedPreferences session;
 
@@ -71,22 +73,17 @@ public class SearchActivity extends AppCompatActivity {
         //Add custom toolbar
         mToolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
         mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tuna</font>"));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawer.openDrawer(Gravity.LEFT);
-            }
-        });
+
 
         //Set listeners for sidebar
-        NavigationView navigationView =  findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+        BottomNavigationView navigationView =  findViewById(R.id.navigation);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if (id == R.id.menu_search) {
                     SearchBarFragment nextFrag= new SearchBarFragment();
-                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    //mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.search_activity, nextFrag, "SearchBarFragment")
                             .addToBackStack(null)
@@ -95,7 +92,7 @@ public class SearchActivity extends AppCompatActivity {
                 else if (id == R.id.menu_savedrecipes)
                 {
                     SavedRecipesFragment nextFrag= new SavedRecipesFragment();
-                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    //mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.search_activity, nextFrag, "SavedRecipesFragment")
                             .addToBackStack(null)
@@ -105,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
                 else if (id == R.id.menu_shoppinglist)
                 {
                     ShoppigListFragment nextFrag= new ShoppigListFragment();
-                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    //mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.search_activity, nextFrag, "ShoppigListFragment")
                             .addToBackStack(null)
@@ -114,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 else if (id == R.id.menu_map)
                 {
-                    mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
+                    //mDrawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
                     startActivity(intent);
 

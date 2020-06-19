@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.example.recipeSE.savedRecipes.utils.SavedRecipesViewModel;
 import com.example.recipeSE.search.utils.Recipe;
 import com.example.recipeSE.search.utils.SearchResultsAdapter;
 import com.example.recipeSE.search.utils.SharedViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -221,7 +223,16 @@ public class DisplayRecipesFragment extends Fragment {
             }
         });
 
-
+        /*
+        * HELPER SNACKBAR
+        * */
+        Snackbar s = Snackbar.make(getView(), getString(R.string.text_label), Snackbar.LENGTH_INDEFINITE);
+        s.setAnchorView(getActivity().findViewById(R.id.navigation));
+        s.setAction(R.string.action_text, v -> {
+            s.dismiss();
+        } );
+        s.show();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
     }
 

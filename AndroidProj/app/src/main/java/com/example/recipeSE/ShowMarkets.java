@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -45,6 +46,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -54,7 +56,7 @@ import org.json.JSONObject;
 public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private DrawerLayout drawer;
+    private CoordinatorLayout drawer;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private final String TAG = this.getClass().getName();
 
@@ -66,16 +68,9 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
         //configure toolbar
         MaterialToolbar mToolbar = findViewById(R.id.topAppBar);
         mToolbar.setTitle(Html.fromHtml("<font color='#ffffff'>Tuna</font>"));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RtlHardcoded")
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(Gravity.LEFT);
-            }
-        });
 
-        NavigationView navigationView = findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        BottomNavigationView navigationView =  findViewById(R.id.navigation);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
@@ -92,7 +87,6 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
                     intent.putExtra("frommap", "shoppinglist");
                     startActivity(intent);
                 } else if (id == R.id.menu_map) {
-                    drawer.closeDrawer(Gravity.LEFT); //close the sidebar
                     Intent intent = new Intent(getApplicationContext(), ShowMarkets.class);
                     startActivity(intent);
 

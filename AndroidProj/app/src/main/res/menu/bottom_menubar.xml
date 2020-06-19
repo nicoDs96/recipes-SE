@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/sidebar_search"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_savedrecipes"
+        android:icon="@drawable/ic_star_black_24dp"
+        android:title="@string/sidebar_saved_recipe"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/menu_shoppinglist"
+        android:icon="@drawable/ic_baseline_list_alt_24"
+        android:title="@string/sidebar_shopping_list"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_map"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/sidebar_find_markets"
+        android:enabled="true"
+        app:showAsAction="ifRoom"/>
+
+</menu>

@@ -43,7 +43,9 @@
         <activity android:name=".MainActivity">
         </activity>
 
-        <activity android:name=".search.SearchActivity">
+        <activity android:name=".search.SearchActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:configChanges="keyboardHidden|orientation|screenSize">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
