@@ -201,7 +201,7 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
     private void loadNearByPlaces(double latitude, double longitude) {
         String googlePlacesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
                                  +latitude+","+longitude+ "&radius=500&types=supermarket&sensor=true&key="
-                                 +"AIzaSyC7uc8dUyn5YQUeLfDvjqpEUXJJAUMqzf4";
+                                 +"AIzaSyCYlhBRneldAI9unT2tjwTbN5BTu07a-OM";
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, googlePlacesUrl, null, new Response.Listener<JSONObject>() {
@@ -221,14 +221,14 @@ public class ShowMarkets extends FragmentActivity implements OnMapReadyCallback 
         // Access the RequestQueue through your singleton class.
         queue.add(jsonObjectRequest);
 
+
     }
 
     private void parseLocationResult(JSONObject result) {
         try {
             JSONArray jsonArray = result.getJSONArray("results");
-
+            Log.d(TAG,result.getString("status")+"!!!!!!!");
             if (result.getString("status").equalsIgnoreCase("OK")) {
-
                 mMap.clear();
 
                 for (int i = 0; i < jsonArray.length(); i++) {
